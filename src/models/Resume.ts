@@ -1,7 +1,7 @@
 export type CardTypes = 'experience' | 'sideProjects' | 'talks' | 'startup' | 'education' | 'other';
 
 export class CardContent {
-  $key?: string;
+  key?: string;
   type: CardTypes;
   title: string;
   link?: string;
@@ -22,9 +22,17 @@ export class CardAccomplishment {
   text: string;
 }
 
+export interface ICardsStore {
+  [fbKey: string]: CardContent;
+}
+
+export interface ICardAccomplishmentsStore {
+  [fbKey: string]: CardAccomplishment;
+}
+
 export interface IResumeState {
-  cards: { [fbKey: string]: CardContent };
-  accomplishments: { [fbKey: string]: CardAccomplishment };
+  cards: ICardsStore;
+  accomplishments: ICardAccomplishmentsStore;
 }
 
 type TitleMap = {

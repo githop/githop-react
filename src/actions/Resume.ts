@@ -14,18 +14,18 @@ export const AsyncResumeLoad = () => {
   return (dispatch: any) => {
     GithopBackend.getResume()
         .then(resumeState => new ResumeLoadSuccess(resumeState))
-        .then(resumeSuccessAction => dispatch(resumeSuccessAction.action()));
-  }
+        .then(resumeSuccessAction => dispatch(resumeSuccessAction.action));
+  };
 };
 
 export class ResumeLoadSuccess {
   readonly type = ResumeActionTypes.LoadSuccess;
   constructor(public payload: IResumeState ) {}
-  action() {
+  get action() {
     return {
       type: this.type,
       payload: this.payload
-    }
+    };
   }
 }
 
