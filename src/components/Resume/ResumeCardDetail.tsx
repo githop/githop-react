@@ -1,16 +1,52 @@
 import * as React from 'react';
-import { ResumeCard } from '../../models/Resume';
+import { ResumeCard, titleMap, CardTypes, CardContent, CardAccomplishment } from '../../models/Resume';
 
 interface IProps {
   card: ResumeCard;
 }
 
+const formatTitle = (title: CardTypes) => {
+  return titleMap[title];
+};
+
+const formatContentLinkTitle = (content: CardContent) => <a href={content.link}>{content.title}</a>;
+const formatContentTitle = (content: CardContent) => <span>{content.title}</span>;
+
+const formatAccomplishments = (accomplishments: CardAccomplishment[] | undefined) => {
+  if (accomplishments == null) {
+    return '';
+  }
+  return (
+      <ul>
+        {accomplishments.map((a, i) => <li key={i}>{a.text}</li>)}
+      </ul>
+  );
+};
+
+const formatContent = (contents: CardContent[]) => {
+  return contents.map((content, i) => {
+    return (
+        <div key={i}>
+          <h3>{content.link ? formatContentLinkTitle(content) : formatContentTitle(content)}</h3>
+          <p>{content.date}</p>
+
+          <h4>{content.position}</h4>
+          <p>{content.description}</p>
+
+          {formatAccomplishments(content.accomplishments)}
+
+          {i + 1 === contents.length && <hr/>}
+        </div>
+    );
+  });
+};
+
 export const ResumeCardDetail: React.StatelessComponent<IProps> = ({ card }: IProps) => {
   return (
       <div>
-        <h3>{card.type}</h3>
+        <h3>{formatTitle(card.type)}</h3>
         <div>
-          <pre>{JSON.stringify(card.content, null, 2)}</pre>
+          {formatContent(card.content)}
         </div>
       </div>
   );

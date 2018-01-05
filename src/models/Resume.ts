@@ -8,12 +8,12 @@ export class CardContent {
   date: string;
   description: string;
   position?: string;
-  accomplishments?: Partial<CardAccomplishment>[];
+  accomplishments?: CardAccomplishment[];
   accomplishmentKeys?: string[];
 }
 
 export class ResumeCard {
-  type: string;
+  type: CardTypes;
   content: CardContent[];
 }
 

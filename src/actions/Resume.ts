@@ -1,5 +1,6 @@
 import { IResumeState } from '../models/Resume';
 import GithopBackend from '../api';
+import { Dispatch } from 'redux';
 
 export enum ResumeActionTypes {
   Load = '[Resume] Load',
@@ -11,7 +12,7 @@ export class ResumeLoad {
 }
 
 export const AsyncResumeLoad = () => {
-  return (dispatch: any) => {
+  return (dispatch: Dispatch<ResumeLoadSuccess>) => {
     GithopBackend.getResume()
         .then(resumeState => new ResumeLoadSuccess(resumeState))
         .then(resumeSuccessAction => dispatch(resumeSuccessAction.action));
