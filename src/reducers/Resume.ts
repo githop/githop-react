@@ -6,11 +6,11 @@ const initialResumeState = {
   accomplishments: {}
 };
 
-
 export const resumeReducer = (state = initialResumeState, action: ResumeActions): IResumeState => {
   switch (action.type) {
     case ResumeActionTypes.LoadSuccess:
       return action.payload;
+      default:
+        return state;
   }
-  return state;
 };
