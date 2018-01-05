@@ -1,6 +1,6 @@
 import { IState } from '../reducers';
 import { connect } from 'react-redux';
-import { ResumeCards } from '../components/Resume/ResumeCards';
+import { ResumeCards } from '../components/ResumeCards';
 import { getResumeCards } from '../selectors/Resume';
 
 const mapStateToProps = (state: IState) => ({

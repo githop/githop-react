@@ -1,5 +1,5 @@
 import { AsyncResumeLoad } from '../actions/Resume';
-import Resume from '../components/Resume/Resume';
+import Resume from '../components/Resume';
 import { IState } from '../reducers';
 import { connect } from 'react-redux';
 

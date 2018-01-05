@@ -6,10 +6,16 @@ import {
   Link,
   Switch
 } from 'react-router-dom';
-import Home from './components/Home/Home';
 import Loadable from 'react-loadable';
 import { Provider } from 'react-redux';
 import { store } from './store';
+
+const Home = Loadable({
+  loader: () => import('./components/Home'),
+  loading() {
+    return <div>Loading...</div>;
+}
+});
 
 const Resume = Loadable({
   loader: () => import('./containers/ResumePage'),

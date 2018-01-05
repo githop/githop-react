@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ResumeCard, titleMap, CardTypes, CardContent, CardAccomplishment } from '../../models/Resume';
+import { ResumeCard, titleMap, CardTypes, CardContent, CardAccomplishment } from '../models/Resume';
 
 interface IProps {
   card: ResumeCard;
@@ -23,6 +23,11 @@ const formatAccomplishments = (accomplishments: CardAccomplishment[] | undefined
   );
 };
 
+const unsafeRenderDescription = (description: string) => {
+  const markup = { __html: description };
+  return <p dangerouslySetInnerHTML={markup} />;
+};
+
 const formatContent = (contents: CardContent[]) => {
   return contents.map((content, i) => {
     return (
@@ -31,7 +36,7 @@ const formatContent = (contents: CardContent[]) => {
           <p>{content.date}</p>
 
           <h4>{content.position}</h4>
-          <p>{content.description}</p>
+          {unsafeRenderDescription(content.description)}
 
           {formatAccomplishments(content.accomplishments)}
 
