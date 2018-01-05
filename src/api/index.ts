@@ -28,7 +28,7 @@ export default class GithopBackend {
     return axios.get(BASE_URL + '/resume.json')
         .then(resp => mapStateToModels(resp.data))
         // .then(resp => resp.data)
-        .then(data => (console.log(data), data))
+        // .then(data => (console.log(data), data))
         .catch(e => e);
   }
 }
