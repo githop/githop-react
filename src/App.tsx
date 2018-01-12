@@ -18,7 +18,7 @@ const Home = Loadable({
 });
 
 const Resume = Loadable({
-  loader: () => import('./containers/ResumePage'),
+  loader: () => import('./containers/ResumeContainer'),
   loading() {
     return <div>Loading...</div>;
   }
