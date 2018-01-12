@@ -5,7 +5,7 @@ node_modules/
 functions/**/*.js
 functions/**/*.js.map
 /functions/githop-backend-firebase-adminsdk-9ldd1-9e8f1f6a9c.json
-
+/functions/firebase-keys.ts
 
 # testing
 /coverage

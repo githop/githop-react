@@ -2,7 +2,7 @@ import axios from 'axios';
 import { CardAccomplishment, CardContent, IResumeState } from '../models/Resume';
 
 const BASE_URL = 'https://githop-backend.firebaseio.com';
-
+// const FUNCTION_URL = 'https://us-central1-githop-backend.cloudfunctions.net/login';
 interface IResumeResponse {
   accomplishments: { [fbKey: string]: CardAccomplishment };
   contents: { [fbKey: string]: CardContent };
