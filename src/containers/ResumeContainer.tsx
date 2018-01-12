@@ -15,7 +15,9 @@ interface Props {
 class ResumeContainer extends React.Component<Props> {
 
   componentDidMount() {
-    this.props.fetchResume();
+    if (this.props.cards.length === 0) {
+      this.props.fetchResume();
+    }
   }
 
   render() {
