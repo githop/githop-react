@@ -1,24 +1,16 @@
 import * as React from 'react';
-import { IResumeState } from '../models/Resume';
-import { ResumeCardList } from '../containers/ResumeCardList';
+import { ResumeCard } from '../models/Resume';
+import { ResumeCards } from './ResumeCards';
 
 interface IResumeProps {
-  resume: IResumeState;
-  fetchResume(): void;
+  cards: ResumeCard[];
 }
 
-export default class Resume extends React.Component<IResumeProps, {}> {
-
-  componentDidMount() {
-    this.props.fetchResume();
-  }
-
-  render() {
-    return (
+export const Resume: React.StatelessComponent<IResumeProps> = (props: IResumeProps) => {
+  return (
       <div>
-        <h1>Resume works!</h1>
-        <ResumeCardList/>
+        <h3>Resume</h3>
+        <ResumeCards cards={props.cards}/>
       </div>
-    );
-  }
-}
+  );
+};
