@@ -24,6 +24,13 @@ const Resume = Loadable({
   }
 });
 
+const Login = Loadable({
+  loader: () => import('./containers/LoginContainer'),
+  loading() {
+    return <div>Loading...</div>;
+  }
+});
+
 class App extends React.Component {
   render() {
     return (
@@ -34,12 +41,14 @@ class App extends React.Component {
                 <ul>
                   <li><Link to="/">Home</Link></li>
                   <li><Link to="/resume">Resume</Link></li>
+                  <li><Link to="/login">Admin login</Link></li>
                 </ul>
               </nav>
 
               <Switch>
                 <Route exact={true} path="/" component={Home}/>
                 <Route path="/resume" component={Resume}/>
+                <Route path="/login" component={Login}/>
               </Switch>
             </div>
           </Router>
