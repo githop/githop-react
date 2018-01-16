@@ -1,6 +1,6 @@
 import { Action, Dispatch } from 'redux';
-import { User } from '../models/User';
-import GithopBackend from '../api';
+import { User } from '../models';
+import { UserService } from '../lib';
 
 export enum AuthActionTypes {
   LoginRequest = '[Login] Login request',
@@ -45,7 +45,7 @@ export const AsyncLogin = ({email, password}: { email: string, password: string 
   return async (dispatch: Dispatch<LoginActions>) => {
     try {
       dispatch(new LoginRequest().asObj);
-      const userModel = await GithopBackend.login(email, password);
+      const userModel = await UserService.login(email, password);
       const userAction = new LoginSuccess(userModel);
       dispatch(userAction.asObj);
     } catch (e) {

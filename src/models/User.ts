@@ -22,7 +22,7 @@ export class User {
     apiKey: string;
     refreshToken: string;
     accessToken: string;
-    expirationTime: string;
+    expirationTime: number;
   };
   redirectEventId: string;
   lastLoginAt: string;

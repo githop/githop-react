@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 import {
   CardAccomplishment, CardContent, CardTypes, ICardAccomplishmentsStore, ICardsStore,
   ResumeCard
-} from '../models/Resume';
+} from '../models';
 
 const getCards = (state: IState): ICardsStore => state.resume.cards;
 const getAccomplishments = (state: IState): ICardAccomplishmentsStore => state.resume.accomplishments;
@@ -66,3 +66,33 @@ export const getResumeCards = createSelector(
       return cards;
     }
 );
+
+export const getCard = (state: IState, contentId: string) => {
+  return {
+    contentId,
+    card: state.resume.cards[contentId]
+  };
+};
+
+export const makeGetAccomplishmentsForCard = () => {
+  return createSelector(
+      getCard,
+      getAccomplishments,
+      ({contentId, card}, accomplishments) => {
+        const newCard = Object.assign(new CardContent(), card);
+        newCard.key = contentId;
+        if (newCard.accomplishmentKeys != null) {
+          newCard.accomplishments = Object.keys(accomplishments).reduce(
+              (accm: CardAccomplishment[], accmpKey: string) => {
+                if (accomplishments[accmpKey].parentKey === contentId) {
+                  accm.push(accomplishments[accmpKey]);
+                }
+                return accm;
+              },
+              []
+          );
+        }
+        return newCard;
+      }
+  );
+};

@@ -1,5 +1,6 @@
-import { User } from '../models/User';
 import { AuthActionTypes, LoginActions } from '../actions';
+import { getLocalUser } from '../lib';
+import { User } from '../models';
 
 export interface IAuthState {
   user: User | null;
@@ -7,13 +8,16 @@ export interface IAuthState {
   error: string;
 }
 
-const initialAuthState = {
-  user: {},
-  isAuthenticated: false,
-  error: ''
-} as IAuthState;
+const setInitialState = (): IAuthState => {
+  const user = getLocalUser();
+  return {
+    user,
+    isAuthenticated: !!user,
+    error: ''
+  } as IAuthState;
+};
 
-export const userReducer = (state = initialAuthState, action: LoginActions): IAuthState => {
+export const userReducer = (state = setInitialState(), action: LoginActions): IAuthState => {
   switch (action.type) {
     case AuthActionTypes.LoginSuccess:
       return {

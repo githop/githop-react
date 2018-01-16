@@ -1,7 +1,7 @@
 export type CardTypes = 'experience' | 'sideProjects' | 'talks' | 'startup' | 'education' | 'other';
 
 export class CardContent {
-  key?: string;
+  key: string;
   type: CardTypes;
   title: string;
   link?: string;
@@ -19,6 +19,7 @@ export class ResumeCard {
 
 export class CardAccomplishment {
   parentKey: string;
+  key: string;
   text: string;
 }
 
@@ -33,6 +34,8 @@ export interface ICardAccomplishmentsStore {
 export interface IResumeState {
   cards: ICardsStore;
   accomplishments: ICardAccomplishmentsStore;
+  loading: boolean;
+  error: string;
 }
 
 type TitleMap = {

@@ -9,6 +9,7 @@ import {
 import Loadable from 'react-loadable';
 import { Provider } from 'react-redux';
 import { store } from './store';
+import AuthenticatedRoute from './components/AuthenticatedRoute';
 
 const Home = Loadable({
   loader: () => import('./components/Home'),
@@ -31,6 +32,13 @@ const Login = Loadable({
   }
 });
 
+const ResumeEditor = Loadable({
+  loader: () => import('./containers/ResumeCardEditorContainer'),
+  loading() {
+    return <div>Loading...</div>;
+  }
+});
+
 class App extends React.Component {
   render() {
     return (
@@ -47,8 +55,9 @@ class App extends React.Component {
 
               <Switch>
                 <Route exact={true} path="/" component={Home}/>
-                <Route path="/resume" component={Resume}/>
-                <Route path="/login" component={Login}/>
+                <Route exact={true} path="/resume" component={Resume}/>
+                <Route exact={true} path="/login" component={Login}/>
+                <AuthenticatedRoute path="/resume/:id/edit" component={ResumeEditor}/>
               </Switch>
             </div>
           </Router>
