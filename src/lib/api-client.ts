@@ -116,14 +116,21 @@ export default class GithopBackend {
     return loginRequest({email, password});
   }
 
-  static updateCardContent(key: string, val: any): Promise<CardContent> {
+  static updateCardContent(key: string, val: CardContent): Promise<CardContent> {
     return GithopBackend.updateField(key, 'contents', val)
         .then(resp => {
           return createInstance(CardContent, {...resp, ...{key}});
         });
   }
 
-  static updateField(field: string, type: 'accomplisments' | 'contents', val: any) {
+  static updateAccomplishment(key: string, val: CardAccomplishment): Promise<CardAccomplishment> {
+    return GithopBackend.updateField(key, 'accomplishments', val)
+        .then((resp: any) => {
+          return createInstance(CardAccomplishment, {...resp, ...{key}});
+        });
+  }
+
+  static updateField(field: string, type: 'accomplishments' | 'contents', val: any) {
     const path = `/resume/${type}/${field}/.json`;
     return request(path, 'PATCH', val, tok);
   }

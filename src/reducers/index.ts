@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { IResumeState } from '../models/Resume';
+import { IResumeState } from '../models';
 import { resumeReducer } from './Resume';
 import { IAuthState, userReducer } from './Auth';
 

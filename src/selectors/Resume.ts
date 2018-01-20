@@ -1,7 +1,7 @@
 import { IState } from '../reducers';
 import { createSelector } from 'reselect';
 import {
-  CardAccomplishment, CardContent, CardTypes, ICardAccomplishmentsStore, ICardsStore,
+  CardAccomplishment, CardContent, CardTypes, createInstance, ICardAccomplishmentsStore, ICardsStore,
   ResumeCard
 } from '../models';
 
@@ -79,7 +79,7 @@ export const makeGetAccomplishmentsForCard = () => {
       getCard,
       getAccomplishments,
       ({contentId, card}, accomplishments) => {
-        const newCard = Object.assign(new CardContent(), card);
+        const newCard = createInstance(CardContent, card);
         newCard.key = contentId;
         if (newCard.accomplishmentKeys != null) {
           newCard.accomplishments = Object.keys(accomplishments).reduce(

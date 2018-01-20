@@ -31,6 +31,12 @@ export const userReducer = (state = setInitialState(), action: LoginActions): IA
         isAuthenticated: false,
         error: action.payload
       };
+    case AuthActionTypes.Logout:
+      return {
+        user: null,
+        isAuthenticated: false,
+        error: ''
+      };
     default:
       return state;
   }

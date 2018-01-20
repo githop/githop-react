@@ -19,6 +19,7 @@ export const resumeReducer = (state = initialResumeState, action: ResumeActions)
       };
     case ResumeActionTypes.Load:
     case ResumeActionTypes.UpdateCardRequest:
+    case ResumeActionTypes.UpdateAccomplishmentRequest:
       return {
         cards: state.cards,
         accomplishments: state.accomplishments,
@@ -36,11 +37,23 @@ export const resumeReducer = (state = initialResumeState, action: ResumeActions)
         error: ''
       };
     case ResumeActionTypes.UpdateCardFailure:
+    case ResumeActionTypes.UpdateAccomplishmentFailure:
       return {
-        cards: { ...state.cards },
-        accomplishments: { ...state.accomplishments },
+        cards: state.cards,
+        accomplishments: state.accomplishments,
         loading: false,
         error: action.payload
+      };
+    case ResumeActionTypes.UpdateAccomplishmentSuccess:
+      const newAccomp = action.payload;
+      if (state.accomplishments[newAccomp.key]) {
+        state.accomplishments[newAccomp.key] = newAccomp;
+      }
+      return {
+        cards: state.cards,
+        accomplishments: { ...state.accomplishments },
+        loading: false,
+        error: state.error
       };
       default:
         return state;

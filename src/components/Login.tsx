@@ -33,8 +33,9 @@ export default class Login extends React.Component<Props, State> {
 
             <label htmlFor="password">Password</label>
             <input onChange={this.handleInputChange} id="password" name="password" type="password"/>
-
-            <button>Login</button>
+            <div>
+              <button>Login</button>
+            </div>
           </form>
         </div>
     );

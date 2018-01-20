@@ -1,4 +1,6 @@
 import * as React from 'react';
+import './css/normalize.css';
+import './css/skeleton.css';
 import './App.css';
 import {
   BrowserRouter as Router,
@@ -44,7 +46,7 @@ class App extends React.Component {
     return (
         <Provider store={store}>
           <Router>
-            <div className="App">
+            <div className="container">
               <nav>
                 <ul>
                   <li><Link to="/">Home</Link></li>

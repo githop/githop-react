@@ -5,7 +5,8 @@ import { UserService } from '../lib';
 export enum AuthActionTypes {
   LoginRequest = '[Login] Login request',
   LoginSuccess = '[Login Login success]',
-  LoginFailure = '[Login] Login failure'
+  LoginFailure = '[Login] Login failure',
+  Logout = '[Login] Logged out'
 }
 
 export class LoginRequest implements Action {
@@ -39,7 +40,16 @@ export class LoginFailure implements Action {
   }
 }
 
-export type LoginActions = LoginRequest | LoginSuccess | LoginFailure;
+export class Logout implements Action {
+  readonly type = AuthActionTypes.Logout;
+  get asObj() {
+    return {
+      type: this.type,
+    };
+  }
+}
+
+export type LoginActions = LoginRequest | LoginSuccess | LoginFailure | Logout;
 
 export const AsyncLogin = ({email, password}: { email: string, password: string }) => {
   return async (dispatch: Dispatch<LoginActions>) => {
@@ -51,5 +61,12 @@ export const AsyncLogin = ({email, password}: { email: string, password: string 
     } catch (e) {
       dispatch(new LoginFailure(e.message).asObj);
     }
+  };
+};
+
+export const LogoutEffects = () => {
+  return (dispatch: Dispatch<LoginActions>) => {
+    dispatch(new Logout().asObj);
+    UserService.logout();
   };
 };

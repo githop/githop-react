@@ -1,6 +1,7 @@
 import './ResumeCardEditor.css';
 import * as React from 'react';
 import { CardContent } from '../../models';
+import AccomplishmentsContainer from '../../containers/AccomplishmentsContainer';
 
 interface Props {
   cardContent: CardContent;
@@ -10,18 +11,6 @@ interface Props {
 interface State {
   editCard: CardContent;
 }
-/*
-  key?: string;
-  type: CardTypes;
-  title: string;
-  link?: string;
-  date: string;
-  description: string;
-  position?: string;
-  accomplishments?: CardAccomplishment[];
-  accomplishmentKeys?: string[];
-'experience' | 'sideProjects' | 'talks' | 'startup' | 'education' | 'other';
-* */
 
 export default class ResumeCardEditor extends React.Component<Props, State> {
 
@@ -42,7 +31,9 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
             {this.renderDate()}
             {this.renderDescription()}
             <section>
-              {this.renderAccomplishments()}
+             <AccomplishmentsContainer
+                 accomplishments={this.state.editCard.accomplishments}
+             />
             </section>
             <button>save</button>
           </form>
@@ -105,22 +96,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
         </section>
     );
   }
-
-  private renderAccomplishments() {
-
-    if (this.state.editCard.accomplishments == null) {
-      return null;
-    }
-
-    return this.state.editCard.accomplishments.map(a => {
-      return (
-          <label key={a.key}>
-            <input value={a.text} onChange={() => void 0}/>
-          </label>
-      );
-    });
-  }
-
+  
   private onInputFieldChange(event: any) {
     const { target: { name, value } } = event;
     this.setState({

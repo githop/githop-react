@@ -1,6 +1,6 @@
 import GithopBackend from '../lib/api-client';
 import { Action, Dispatch } from 'redux';
-import { CardContent, IResumeState } from '../models';
+import { CardAccomplishment, CardContent, IResumeState } from '../models';
 
 export enum ResumeActionTypes {
   Load = '[Resume] Load',
@@ -8,6 +8,9 @@ export enum ResumeActionTypes {
   UpdateCardRequest = '[Resume] Update card request',
   UpdateCardSuccess = '[Resume] Update card success',
   UpdateCardFailure = '[Resume] Update card failure',
+  UpdateAccomplishmentRequest = '[Resume] Update Accomplishment request',
+  UpdateAccomplishmentSuccess = '[Resume] Update Accomplishment success',
+  UpdateAccomplishmentFailure = '[Resume] Update Accomplishment failure',
 }
 
 export class ResumeLoad {
@@ -23,7 +26,7 @@ export const AsyncResumeLoad = () => {
 };
 
 export const AsyncUpdateCard = (nc: CardContent) => {
-  return async (dispatch: Dispatch<UpdateActions>) => {
+  return async (dispatch: Dispatch<UpdateCardActions>) => {
     try {
       dispatch(new UpdateCardRequest().asObj);
       const newContents = await GithopBackend.updateCardContent(nc.key, nc);
@@ -31,6 +34,19 @@ export const AsyncUpdateCard = (nc: CardContent) => {
       dispatch(updateAction.asObj);
     } catch (e) {
       dispatch(new UpdateCardFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncUpdateAccomplishment = (na: CardAccomplishment) => {
+  return async (dispatch: Dispatch<UpdateCardActions>) => {
+    try {
+      dispatch(new UpdateAccomplishmentRequest().asObj);
+      const accmpModel = await GithopBackend.updateAccomplishment(na.key, na);
+      const updateAction = new UpdateAccomplishmentSuccess(accmpModel);
+      dispatch(updateAction.asObj);
+    } catch (e) {
+      dispatch(new UpdateAccomplishmentFailure(e).asObj);
     }
   };
 };
@@ -77,10 +93,46 @@ export class UpdateCardFailure implements Action {
   }
 }
 
-export type UpdateActions = UpdateCardRequest
+export class UpdateAccomplishmentRequest implements Action {
+  readonly type = ResumeActionTypes.UpdateAccomplishmentRequest;
+  get asObj() {
+    return {
+      type: this.type
+    };
+  }
+}
+
+export class UpdateAccomplishmentSuccess implements Action {
+  readonly type = ResumeActionTypes.UpdateAccomplishmentSuccess;
+  constructor(public payload: CardAccomplishment) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class UpdateAccomplishmentFailure implements Action {
+  readonly type = ResumeActionTypes.UpdateAccomplishmentFailure;
+  constructor(public payload: string) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export type UpdateAccomplishmentActions = UpdateAccomplishmentRequest
+    | UpdateAccomplishmentSuccess
+    | UpdateAccomplishmentFailure;
+
+export type UpdateCardActions = UpdateCardRequest
     | UpdateCardSuccess
     | UpdateCardFailure;
 
 export type ResumeActions = ResumeLoad
     | ResumeLoadSuccess
-    | UpdateActions;
+    | UpdateCardActions
+    | UpdateAccomplishmentActions;

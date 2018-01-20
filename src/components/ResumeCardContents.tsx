@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { CardAccomplishment, CardContent } from '../models';
+import AdminLinkContainer from '../containers/AdminLinkContainer';
 interface Props {
   cardContent: CardContent;
 }
-
 const formatContentLinkTitle = (content: CardContent) => <a href={content.link}>{content.title}</a>;
 const formatContentTitle = (content: CardContent) => <span>{content.title}</span>;
 
@@ -28,6 +28,9 @@ const ResumeCardContent: React.StatelessComponent<Props> = (props: Props) => {
   return (
       <div>
         <h3>{content.link ? formatContentLinkTitle(content) : formatContentTitle(content)}</h3>
+        <AdminLinkContainer to={`/resume/${content.key}/edit`}>
+          Edit
+        </AdminLinkContainer>
         <p>{content.date}</p>
 
         <h4>{content.position}</h4>
