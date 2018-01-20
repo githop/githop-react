@@ -24,7 +24,7 @@ export default class Login extends React.Component<Props, State> {
 
   render() {
     return (
-        <div>
+        <div className="page-root">
           <h1>Admin Login</h1>
 
           <form onSubmit={this.handleSubmit}>

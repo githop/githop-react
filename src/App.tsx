@@ -14,10 +14,10 @@ import { store } from './store';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 
 const Home = Loadable({
-  loader: () => import('./components/Home'),
+  loader: () => import('./components/home/Home'),
   loading() {
     return <div>Loading...</div>;
-}
+  }
 });
 
 const Resume = Loadable({
@@ -46,13 +46,11 @@ class App extends React.Component {
     return (
         <Provider store={store}>
           <Router>
-            <div className="container">
-              <nav>
-                <ul>
-                  <li><Link to="/">Home</Link></li>
-                  <li><Link to="/resume">Resume</Link></li>
-                  <li><Link to="/login">Admin login</Link></li>
-                </ul>
+            <div className="gth-root">
+              <nav className="gth-nav">
+                <Link to="/">Home</Link>
+                <Link to="/resume">Resume</Link>
+                <Link to="/login">Admin login</Link>
               </nav>
 
               <Switch>

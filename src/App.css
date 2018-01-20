@@ -1,0 +1,15 @@
+
+.gth-root {
+  display: flex;
+  flex-direction: row;
+}
+
+.gth-nav {
+  display: flex;
+  flex-direction: column;
+  width: 10%;
+}
+
+.page-root {
+  width: 90%;
+}

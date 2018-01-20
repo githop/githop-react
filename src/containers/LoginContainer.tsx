@@ -20,7 +20,7 @@ class LoginContainer extends React.Component<Props> {
     }
 
     return (
-        <div>
+        <div className="page-root">
           <h1>Logout</h1>
           <button onClick={() => this.props.logout()}>logout</button>
         </div>

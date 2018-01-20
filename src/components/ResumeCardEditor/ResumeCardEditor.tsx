@@ -23,7 +23,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
 
   render() {
     return (
-        <div>
+        <div className="page-root">
           <h3>Edit Card</h3>
           <form onSubmit={this.handleSubmit}>
             {this.renderCardTypeSelect()}
