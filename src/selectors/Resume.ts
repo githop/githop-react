@@ -60,12 +60,45 @@ export const groupByCardType = createSelector(
     }
 );
 
-export const getResumeCards = createSelector(
-    groupByCardType,
-    (cards: ResumeCard[]) => {
-      return cards;
+const sortCards = (cards: ResumeCard[]): ResumeCard[] => {
+  return cards.sort((a, b) => {
+    if (a.type === 'experience') {
+      return -1;
+    } else if (b.type === 'experience') {
+      return 1;
+    } else if (a.type === 'sideProjects') {
+      return -1;
+    } else if (b.type === 'sideProjects') {
+      return 1;
+    } else if (a.type === 'talks') {
+      return -1;
+    } else if (b.type === 'talks') {
+      return 1;
+    } else if (a.type === 'startup') {
+      return -1;
+    } else if (b.type === 'startup') {
+      return 1;
+    } else if (a.type === 'education') {
+      return -1;
+    } else if (b.type === 'education') {
+      return 1;
+    } else if (a.type === 'other') {
+      return -1;
+    } else if (b.type === 'other') {
+      return 1;
     }
-);
+    return 0;
+  });
+};
+
+export const makeGetResumeCards = () => {
+  return createSelector(
+      groupByCardType,
+      (cards: ResumeCard[]) => {
+        return sortCards(cards);
+      }
+  );
+};
 
 export const getCard = (state: IState, contentId: string) => {
   return {

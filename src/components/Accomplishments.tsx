@@ -4,6 +4,7 @@ import { CardAccomplishment } from '../models';
 interface Props {
   accomplishments: CardAccomplishment[];
   updateAccomplishment: (na: CardAccomplishment) => Promise<void>;
+  updatePreview: (tna: any) => any;
 }
 
 interface State {
@@ -23,6 +24,8 @@ export default class Accomplishments extends React.Component<Props, State> {
   render() {
     return (
         <div>
+          <label>Accomplishments</label>
+          <button>Add</button>
           {this.renderAccomplishments()}
         </div>
     );
@@ -36,15 +39,14 @@ export default class Accomplishments extends React.Component<Props, State> {
     return this.state.accomplishments.map(a => {
       return (
           <div key={a.key}>
-            <label>
-              <textarea
-                  className="u-full-width"
-                  name={a.key}
-                  value={a.text}
-                  onChange={(e) => this.handleInputFieldChange(e, a)}
-              />
-            </label>
+            <textarea
+                className="u-full-width"
+                name={a.key}
+                value={a.text}
+                onChange={(e) => this.handleInputFieldChange(e, a)}
+            />
             <button onClick={(e) => this.dispatchUpdate(e, a)}>update</button>
+            <button>Delete</button>
           </div>
       );
     });
@@ -56,11 +58,13 @@ export default class Accomplishments extends React.Component<Props, State> {
   }
 
   private handleInputFieldChange(e: any, originalAccmp: CardAccomplishment) {
-    const { value } = e.target;
+    const {value} = e.target;
     originalAccmp.text = value;
     this.setState({
       accomplishments: [...this.state.accomplishments!]
     });
+
+    this.props.updatePreview(this.state.accomplishments);
   }
 
 }

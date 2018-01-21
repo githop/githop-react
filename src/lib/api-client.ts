@@ -1,5 +1,6 @@
 import { CardAccomplishment, CardContent, createInstance, IResumeState, mockUser, User } from '../models';
 import { getLocalUser } from './user-service';
+import { omit } from './index';
 
 const LOGIN_FUNCTION_URL = 'https://us-central1-githop-backend.cloudfunctions.net/login';
 
@@ -129,7 +130,8 @@ export default class GithopBackend {
   }
 
   static updateCardContent(key: string, val: CardContent): Promise<CardContent> {
-    return GithopBackend.updateField(key, 'contents', val)
+    // strip out client side accomplishments array to keep data normalized
+    return GithopBackend.updateField(key, 'contents', omit(val, 'accomplishments'))
         .then(resp => {
           return createInstance(CardContent, {...resp, ...{key}});
         });

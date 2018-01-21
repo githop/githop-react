@@ -1,7 +1,8 @@
 import './ResumeCardEditor.css';
 import * as React from 'react';
-import { CardContent } from '../../models';
+import { CardContent, titleMap } from '../../models';
 import AccomplishmentsContainer from '../../containers/AccomplishmentsContainer';
+import ResumeCardContents from '../ResumeCardContents/ResumeCardContents';
 
 interface Props {
   cardContent: CardContent;
@@ -11,7 +12,6 @@ interface Props {
 interface State {
   editCard: CardContent;
 }
-
 export default class ResumeCardEditor extends React.Component<Props, State> {
 
   constructor(props: Props) {
@@ -19,26 +19,45 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     this.state = { editCard: this.props.cardContent };
     this.onInputFieldChange = this.onInputFieldChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAccomplishementPreview = this.handleAccomplishementPreview.bind(this);
+    this.onSelectChange = this.onSelectChange.bind(this);
   }
 
   render() {
     return (
-        <div className="page-root">
-          <h3>Edit Card</h3>
-          <form onSubmit={this.handleSubmit}>
-            {this.renderCardTypeSelect()}
-            {this.renderTitle()}
-            {this.renderDate()}
-            {this.renderDescription()}
-            <section>
-             <AccomplishmentsContainer
-                 accomplishments={this.state.editCard.accomplishments}
-             />
-            </section>
-            <button>save</button>
-          </form>
+        <div className="page-root container resume-editor">
+          <div className="editor-pane">
+            <h3>Edit Card</h3>
+            <form onSubmit={this.handleSubmit}>
+              {this.renderCardTypeSelect()}
+              {this.renderTitle()}
+              {this.renderDate()}
+              {this.renderDescription()}
+              <section>
+                <AccomplishmentsContainer
+                    updatePreview={this.handleAccomplishementPreview}
+                    accomplishments={this.state.editCard.accomplishments}
+                />
+              </section>
+              <button>save</button>
+            </form>
+          </div>
+          <div className="accomplishment-preview-pane">
+            <h5>Preview</h5>
+            <div className="--downscale --no-click">
+              <ResumeCardContents cardContent={this.state.editCard}/>
+            </div>
+          </div>
         </div>
     );
+  }
+
+  private handleAccomplishementPreview(a: any) {
+    const newCard = Object.assign({}, this.state.editCard);
+    newCard.accomplishments = a;
+    this.setState({
+      editCard: newCard
+    });
   }
 
   private handleSubmit(ev: any) {
@@ -89,6 +108,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
           <label htmlFor="description">Description</label>
           <textarea
               id="description"
+              className="u-full-width"
               name="description"
               value={this.state.editCard.description}
               onChange={this.onInputFieldChange}
@@ -104,10 +124,19 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     });
   }
 
+  private onSelectChange(e: any) {
+    const newCard = Object.assign({}, this.state.editCard);
+    const { value } = e.target;
+    newCard.type = value;
+    this.setState({
+      editCard: newCard
+    });
+  }
+
   private renderCardTypeSelect() {
     return (
         <label htmlFor="cardSelect">Card Type
-        <select onChange={() => void 0} id="cardSelect" value={this.props.cardContent.type}>
+        <select onChange={this.onSelectChange} id="cardSelect" value={this.state.editCard.type}>
           {this.renderTypeSelectOptions()}
         </select>
         </label>
@@ -117,7 +146,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
   private renderTypeSelectOptions() {
     const cardTypes = ['experience', 'sideProjects', 'talks', 'startup', 'education', 'other'];
     return cardTypes.map(t => {
-      return <option key={t} value={t}>{t}</option>;
+      return <option key={t} value={t}>{titleMap[t]}</option>;
     });
   }
 }
