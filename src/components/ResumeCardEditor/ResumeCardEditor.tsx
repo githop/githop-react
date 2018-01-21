@@ -35,8 +35,9 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
               {this.renderDescription()}
               <section>
                 <AccomplishmentsContainer
-                    updatePreview={this.handleAccomplishementPreview}
+                    parentKey={this.state.editCard.key}
                     accomplishments={this.state.editCard.accomplishments}
+                    updatePreview={this.handleAccomplishementPreview}
                 />
               </section>
               <button>save</button>

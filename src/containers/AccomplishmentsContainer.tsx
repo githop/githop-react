@@ -7,10 +7,12 @@ import { AsyncUpdateAccomplishment, UpdateAccomplishmentActions } from '../actio
 
 interface Props {
   accomplishments: CardAccomplishment[] | undefined;
+  parentKey: string;
 }
 
 const mapStateToProps = (state: IState, props: Props) => ({
-  accomplishments: props.accomplishments
+  accomplishments: props.accomplishments,
+  parentKey: props.parentKey
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<UpdateAccomplishmentActions>) => ({
