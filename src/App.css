@@ -1,15 +1,85 @@
 
 .gth-root {
   display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.gth-content {
+  flex: 1;
+  display: flex;
   flex-direction: row;
+  align-content: space-between;
+}
+
+.gth-nav-buffer {
+  width: 50px;
 }
 
 .gth-nav {
+  z-index: 1;
+  position: fixed;
   display: flex;
   flex-direction: column;
-  width: 10%;
 }
 
-.page-root {
-  width: 90%;
+.gth-nav .--gth-emoji {
+  font-size: 1.6rem;
+}
+
+.link-text {
+  display: none;
+}
+
+/* Larger than mobile */
+@media (min-width: 420px) {
+
+  .--gth-emoji {
+    font-size: 4.0rem;
+    line-height: 1.2;
+    letter-spacing: -.1rem;
+  }
+
+  .link-text {
+    display: inline;
+  }
+  .gth-nav .--gth-emoji {
+    font-size: 3.6rem;
+  }
+}
+
+.gth-nav a {
+  text-decoration: none;
+}
+
+.--gth-border {
+  border: 1px dashed #f90050;
+}
+
+.--gth-border-radius {
+  border-radius: 2px;
+}
+
+.--gth-hr {
+  border: 0.5px dashed #D0FA03;
+}
+
+.--gth-underline {
+  text-decoration: none;
+  background-image: linear-gradient(to right, #D0FA03 75%, transparent 75%);
+  background-position: 0 1.04em;
+  background-repeat: repeat-x;
+  background-size: 8px 3px;
+}
+
+.--gth-emoji {
+  font-size: 3.6rem;
+  line-height: 1.25;
+  letter-spacing: -.1rem;
+}
+
+.gth-footer {
+  margin: 0;
+  text-align: center;
+  height: 2rem;
 }

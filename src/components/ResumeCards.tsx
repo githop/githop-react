@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ResumeCard } from '../models/Resume';
-import { ResumeCardDetail } from './ResumeCardDetail';
+import { ResumeCard } from '../models';
+import { ResumeCardDetail } from './ResumeCardDetail/ResumeCardDetail';
 
 interface IProps {
   cards: ResumeCard[];

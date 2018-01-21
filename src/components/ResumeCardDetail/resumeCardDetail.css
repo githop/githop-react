@@ -1,0 +1,17 @@
+.card-type {
+  text-align: right;
+  margin-right: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.card-type * {
+  margin:0 0.25rem;
+}
+
+.gth-resume-card {
+  margin: 1rem;
+  padding: 1rem;
+}

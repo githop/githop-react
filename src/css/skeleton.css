@@ -124,9 +124,9 @@ body {
   font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
   line-height: 1.6;
   font-weight: 400;
+  background-color: #fff;/*#fdfbfb*/
   font-family: "Arimo", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #222; }
-
 
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -160,9 +160,9 @@ p {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a {
   font-family: "Cousine", monospace;
-  color: #1EAEDB; }
+  color: #f90050; }
 a:hover {
-  color: #0FA0CE; }
+  color: #ff145f; }
 
 
 /* Buttons
@@ -172,7 +172,7 @@ button,
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
-  font-family: "Cousine", monospace;
+  font-family: "Cousine", monos;
   display: inline-block;
   height: 38px;
   padding: 0 30px;
@@ -209,8 +209,8 @@ input[type="submit"].button-primary,
 input[type="reset"].button-primary,
 input[type="button"].button-primary {
   color: #FFF;
-  background-color: #33C3F0;
-  border-color: #33C3F0; }
+  background-color: #f90050;
+  border-color: #f90050; }
 .button.button-primary:hover,
 button.button-primary:hover,
 input[type="submit"].button-primary:hover,
@@ -222,8 +222,8 @@ input[type="submit"].button-primary:focus,
 input[type="reset"].button-primary:focus,
 input[type="button"].button-primary:focus {
   color: #FFF;
-  background-color: #1EAEDB;
-  border-color: #1EAEDB; }
+  background-color: #ff145f;
+  border-color: #ff145f; }
 
 
 /* Forms
@@ -269,7 +269,7 @@ input[type="url"]:focus,
 input[type="password"]:focus,
 textarea:focus,
 select:focus {
-  border: 1px solid #33C3F0;
+  border: 1px solid #f90050;
   outline: 0; }
 label,
 legend {
@@ -291,20 +291,27 @@ label > .label-body {
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
-  list-style: circle inside; }
+  display: block;
+  list-style: disc inside;
+}
+
 ol {
-  list-style: decimal inside; }
-ol, ul {
-  padding-left: 0;
-  margin-top: 0; }
+  display: block;
+  list-style: disc inside;
+}
+
 ul ul,
 ul ol,
 ol ol,
 ol ul {
   margin: 1.5rem 0 1.5rem 3rem;
-  font-size: 90%; }
+  font-size: 90%;
+}
+
 li {
-  margin-bottom: 1rem; }
+  display: list-item;
+  margin-bottom: 1rem;
+}
 
 
 /* Code

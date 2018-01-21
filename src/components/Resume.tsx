@@ -8,8 +8,7 @@ interface IResumeProps {
 
 export const Resume: React.StatelessComponent<IResumeProps> = (props: IResumeProps) => {
   return (
-      <div className="page-root">
-        <h3>Resume</h3>
+      <div className="page-root container">
         <ResumeCards cards={props.cards}/>
       </div>
   );

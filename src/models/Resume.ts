@@ -50,3 +50,12 @@ export const titleMap: TitleMap = {
   'education': 'Education',
   'other': 'Other'
 };
+
+export const emojiMap: TitleMap = {
+  'experience': '💼',
+  'sideProjects': '🏗️',
+  'talks': '🎤',
+  'startup': '🏅',
+  'education': '🎒',
+  'other': '🤷'
+};

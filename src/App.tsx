@@ -5,7 +5,7 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Route,
-  Link,
+  NavLink as Link,
   Switch
 } from 'react-router-dom';
 import Loadable from 'react-loadable';
@@ -47,18 +47,34 @@ class App extends React.Component {
         <Provider store={store}>
           <Router>
             <div className="gth-root">
-              <nav className="gth-nav">
-                <Link to="/">Home</Link>
-                <Link to="/resume">Resume</Link>
-                <Link to="/login">Admin login</Link>
-              </nav>
+              <div className="gth-content">
+                <div className="gth-nav-buffer">
+                  <nav className="gth-nav">
+                    <Link to="/">
+                      <span className="--gth-emoji">🏠</span>
+                      <br/>
+                      <span className="link-text">Home</span>
+                    </Link>
+                    <Link to="/resume">
+                      <span className="--gth-emoji">💼</span>
+                      <br/>
+                      <span className="link-text">Resume</span>
+                    </Link>
+                    {/*<Link to="/login">Admin login</Link>*/}
+                  </nav>
+                </div>
 
-              <Switch>
-                <Route exact={true} path="/" component={Home}/>
-                <Route exact={true} path="/resume" component={Resume}/>
-                <Route exact={true} path="/login" component={Login}/>
-                <AuthenticatedRoute path="/resume/:id/edit" component={ResumeEditor}/>
-              </Switch>
+                <Switch>
+                  <Route exact={true} path="/" component={Home}/>
+                  <Route exact={true} path="/resume" component={Resume}/>
+                  <Route exact={true} path="/login" component={Login}/>
+                  <AuthenticatedRoute path="/resume/:id/edit" component={ResumeEditor}/>
+                </Switch>
+              </div>
+              <footer className="gth-footer">
+                Built with love by&nbsp;
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/githop/githop-react">githop</a>
+              </footer>
             </div>
           </Router>
         </Provider>
