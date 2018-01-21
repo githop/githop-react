@@ -1,8 +1,18 @@
-import { CardAccomplishment, CardContent, createInstance, IResumeState, User } from '../models';
+import { CardAccomplishment, CardContent, createInstance, IResumeState, mockUser, User } from '../models';
 import { getLocalUser } from './user-service';
 
-const BASE_URL = 'https://githop-backend.firebaseio.com';
 const LOGIN_FUNCTION_URL = 'https://us-central1-githop-backend.cloudfunctions.net/login';
+
+const getApiUrl = () => {
+  let baseUrl = 'githop-backend.firebaseio.com';
+  let proto = 'https://';
+  if (process.env.NODE_ENV === 'development') {
+    baseUrl = 'dev-' + baseUrl;
+  }
+  return proto + baseUrl;
+};
+
+const BASE_URL = getApiUrl();
 
 type methods = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 const request = <T>(path: string, method: methods = 'GET', payload?: any, token?: string): Promise<T> => {
@@ -42,7 +52,10 @@ const request = <T>(path: string, method: methods = 'GET', payload?: any, token?
       .then((data) => data);
 };
 
-const loginRequest = <T>(payload: any): Promise<T> => {
+const loginRequest = (payload: any): Promise<any> => {
+  if (process.env.NODE_ENV === 'development') {
+    return Promise.resolve(mockUser);
+  }
   const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
@@ -100,7 +113,6 @@ const localUser = getLocalUser();
 let tok: string | undefined;
 if (localUser && localUser.stsTokenManager.accessToken) {
   tok = localUser.stsTokenManager.accessToken;
-
 }
 
 export default class GithopBackend {

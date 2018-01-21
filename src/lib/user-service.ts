@@ -1,7 +1,15 @@
 import GithopBackend from './api-client';
 import { createInstance, User } from '../models';
 
-export const LOCAL_STORAGE_USER_KEY = 'user';
+const getLocalStorageKey = () => {
+  let key = 'user';
+  if (process.env.NODE_ENV === 'development') {
+    key = 'dev-' + key;
+  }
+  return key;
+};
+
+export const LOCAL_STORAGE_USER_KEY = getLocalStorageKey();
 
 export const getLocalUser = () => {
   const localUser = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
@@ -25,7 +33,7 @@ export class UserService {
     return GithopBackend.login(email, password)
         .then((user: User) => {
           localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(user));
-          return user;
+          return createInstance(User, user);
         });
   }
 
