@@ -158,4 +158,8 @@ export default class GithopBackend {
           );
         });
   }
+
+  static deleteAccomplishment(accomplishmentKey: string) {
+    return request(`/resume/accomplishments/${accomplishmentKey}`, 'DELETE', null, tok);
+  }
 }

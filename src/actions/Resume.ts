@@ -4,7 +4,8 @@ import { CardAccomplishment, CardContent, IResumeState } from '../models';
 
 export enum ResumeActionTypes {
   Load = '[Resume] Load',
-  LoadSuccess = '[Resume] Load Success',
+  LoadSuccess = '[Resume] Load success',
+  LoadFailure = '[Resume] Load failure',
   UpdateCardRequest = '[Resume] Update card request',
   UpdateCardSuccess = '[Resume] Update card success',
   UpdateCardFailure = '[Resume] Update card failure',
@@ -14,17 +15,21 @@ export enum ResumeActionTypes {
   AddAccomplishmentRequest = '[Resume] Add accomplishment request',
   AddAccomplishmentSuccess = '[Resume] Add accomplishment success',
   AddAccomplishmentFailure = '[Resume] Add accomplishment failure',
-}
-
-export class ResumeLoad {
-  readonly type = ResumeActionTypes.Load;
+  DeleteAccomplishmentRequest = '[Resume] Delete accomplishment request',
+  DeleteAccomplishmentSuccess = '[Resume] Delete accomplishment success',
+  DeleteAccomplishmentFailure = '[Resume] Delete accomplishment failure',
 }
 
 export const AsyncResumeLoad = () => {
-  return (dispatch: Dispatch<ResumeLoadSuccess>) => {
-    GithopBackend.getResume()
-        .then(resumeState => new ResumeLoadSuccess(resumeState))
-        .then(resumeSuccessAction => dispatch(resumeSuccessAction.asObj));
+  return async (dispatch: Dispatch<ResumeActions>) => {
+    try {
+      dispatch(new ResumeLoad().asObj);
+      const resumeModel = await GithopBackend.getResume();
+      const resumeAction = new ResumeLoadSuccess(resumeModel);
+      dispatch(resumeAction.asObj);
+    } catch (e) {
+      dispatch(new ResumeLoadFailure(e).asObj);
+    }
   };
 };
 
@@ -67,9 +72,41 @@ export const AsyncAddAccomplishment = (na: CardAccomplishment) => {
   };
 };
 
+export const AsyncDeleteAccomplishment = (accomplishmentKey: string) => {
+  return async (dispatch: Dispatch<DeleteAccomplishementActions>) => {
+    try {
+      dispatch(new DeleteAccomplishmentRequest().asObj);
+      await GithopBackend.deleteAccomplishment(accomplishmentKey);
+      dispatch(new DeleteAccomplishmentSuccess(accomplishmentKey).asObj);
+    } catch (e) {
+      dispatch(new DeleteAccomplishmentFailure(e).asObj);
+    }
+  };
+};
+
+export class ResumeLoad implements Action {
+  readonly type = ResumeActionTypes.Load;
+  get asObj() {
+    return {
+      type: this.type,
+    };
+  }
+}
+
 export class ResumeLoadSuccess implements Action {
   readonly type = ResumeActionTypes.LoadSuccess;
   constructor(public payload: IResumeState ) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class ResumeLoadFailure implements Action {
+  readonly type = ResumeActionTypes.LoadFailure;
+  constructor(public payload: string ) {}
   get asObj() {
     return {
       type: this.type,
@@ -171,6 +208,41 @@ export class AddAccomplishmentFailure implements Action {
   }
 }
 
+export class DeleteAccomplishmentRequest implements Action {
+  readonly type = ResumeActionTypes.DeleteAccomplishmentRequest;
+  get asObj() {
+    return {
+      type: this.type
+    };
+  }
+}
+
+export class DeleteAccomplishmentSuccess implements Action {
+  readonly type = ResumeActionTypes.DeleteAccomplishmentSuccess;
+  constructor(public payload: string) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class DeleteAccomplishmentFailure implements Action {
+  readonly type = ResumeActionTypes.DeleteAccomplishmentFailure;
+  constructor(public payload: string) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export type DeleteAccomplishementActions = DeleteAccomplishmentRequest
+    | DeleteAccomplishmentSuccess
+    | DeleteAccomplishmentFailure;
+
 export type AddAccomplishementActions = AddAccomplishmentRequest
     | AddAccomplishmentSuccess
     | AddAccomplishmentFailure;
@@ -184,7 +256,9 @@ export type UpdateCardActions = UpdateCardRequest
     | UpdateCardFailure;
 
 export type ResumeActions = ResumeLoad
+    | ResumeLoadFailure
     | ResumeLoadSuccess
     | UpdateCardActions
     | UpdateAccomplishmentActions
-    | AddAccomplishementActions;
+    | AddAccomplishementActions
+    | DeleteAccomplishementActions;

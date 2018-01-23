@@ -7,6 +7,7 @@ interface Props {
   updateAccomplishment: (na: CardAccomplishment) => Promise<void>;
   updatePreview: (tna: any) => any;
   addAccomplishment: (na: CardAccomplishment) => Promise<void>;
+  deleteAccomplishment: (accomplishmentKey: string) => Promise<void>;
 }
 
 interface State {
@@ -26,6 +27,7 @@ export default class Accomplishments extends React.Component<Props, State> {
     this.updateTempAccomplishment = this.updateTempAccomplishment.bind(this);
     this.addTempAccomplishment = this.addTempAccomplishment.bind(this);
     this.dispatchAddAccomplishment = this.dispatchAddAccomplishment.bind(this);
+    this.dispatchDeleteAccomplishment = this.dispatchDeleteAccomplishment.bind(this);
   }
 
   componentWillReceiveProps(nextProps: any) {
@@ -62,7 +64,7 @@ export default class Accomplishments extends React.Component<Props, State> {
                 onChange={(e) => this.handleInputFieldChange(e, a)}
             />
             <button onClick={(e) => this.dispatchUpdate(e, a)}>update</button>
-            <button>Delete</button>
+            <button onClick={(e) => this.dispatchDeleteAccomplishment(e, a.key)}>Delete</button>
           </div>
       );
     });
@@ -87,6 +89,11 @@ export default class Accomplishments extends React.Component<Props, State> {
           <button onClick={() => this.setState({tempAccomplishment: null})}>Delete</button>
         </div>
     );
+  }
+
+  private dispatchDeleteAccomplishment(e: any, key: string) {
+    e.preventDefault();
+    this.props.deleteAccomplishment(key);
   }
 
   private dispatchAddAccomplishment() {

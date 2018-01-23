@@ -3,7 +3,10 @@ import { IState } from '../reducers';
 import { connect } from 'react-redux';
 import Accomplishments from '../components/Accomplishments';
 import { Dispatch } from 'redux';
-import { AsyncAddAccomplishment, AsyncUpdateAccomplishment, UpdateAccomplishmentActions } from '../actions';
+import {
+  AsyncAddAccomplishment, AsyncDeleteAccomplishment, AsyncUpdateAccomplishment,
+  UpdateAccomplishmentActions
+} from '../actions';
 import { makeGetAccomplishmentsForEditor } from '../selectors';
 
 interface OwnProps {
@@ -22,7 +25,8 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch: Dispatch<UpdateAccomplishmentActions>) => ({
   updateAccomplishment: (na: CardAccomplishment) => dispatch(AsyncUpdateAccomplishment(na)),
-  addAccomplishment: (na: CardAccomplishment) => dispatch(AsyncAddAccomplishment(na))
+  addAccomplishment: (na: CardAccomplishment) => dispatch(AsyncAddAccomplishment(na)),
+  deleteAccomplishment: (accomplishmentKey: string) => dispatch(AsyncDeleteAccomplishment(accomplishmentKey))
 });
 
 export default connect(

@@ -9,7 +9,6 @@ export class CardContent {
   description: string;
   position?: string;
   accomplishments?: CardAccomplishment[];
-  accomplishmentKeys?: string[];
 }
 
 export class ResumeCard {

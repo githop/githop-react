@@ -1,5 +1,6 @@
 import { ResumeActions, ResumeActionTypes } from '../actions';
 import { IResumeState } from '../models';
+import { omit } from '../lib';
 
 const initialResumeState = {
   cards: {},
@@ -10,21 +11,32 @@ const initialResumeState = {
 
 export const resumeReducer = (state = initialResumeState, action: ResumeActions): IResumeState => {
   switch (action.type) {
+    case ResumeActionTypes.Load:
+    case ResumeActionTypes.UpdateCardRequest:
+    case ResumeActionTypes.UpdateAccomplishmentRequest:
+    case ResumeActionTypes.AddAccomplishmentRequest:
+    case ResumeActionTypes.DeleteAccomplishmentRequest:
+      return {
+        cards: state.cards,
+        accomplishments: state.accomplishments,
+        loading: true,
+        error: ''
+      };
+    case ResumeActionTypes.UpdateCardFailure:
+    case ResumeActionTypes.UpdateAccomplishmentFailure:
+    case ResumeActionTypes.AddAccomplishmentFailure:
+    case ResumeActionTypes.DeleteAccomplishmentFailure:
+      return {
+        cards: state.cards,
+        accomplishments: state.accomplishments,
+        loading: false,
+        error: action.payload
+      };
     case ResumeActionTypes.LoadSuccess:
       return {
         cards: action.payload.cards,
         accomplishments: action.payload.accomplishments,
         loading: false,
-        error: ''
-      };
-    case ResumeActionTypes.Load:
-    case ResumeActionTypes.UpdateCardRequest:
-    case ResumeActionTypes.UpdateAccomplishmentRequest:
-    case ResumeActionTypes.AddAccomplishmentRequest:
-      return {
-        cards: state.cards,
-        accomplishments: state.accomplishments,
-        loading: true,
         error: ''
       };
     case ResumeActionTypes.UpdateCardSuccess:
@@ -36,15 +48,6 @@ export const resumeReducer = (state = initialResumeState, action: ResumeActions)
         accomplishments: { ...state.accomplishments },
         loading: false,
         error: ''
-      };
-    case ResumeActionTypes.UpdateCardFailure:
-    case ResumeActionTypes.UpdateAccomplishmentFailure:
-    case ResumeActionTypes.AddAccomplishmentFailure:
-      return {
-        cards: state.cards,
-        accomplishments: state.accomplishments,
-        loading: false,
-        error: action.payload
       };
     case ResumeActionTypes.UpdateAccomplishmentSuccess:
       const newAccomp = action.payload;
@@ -64,6 +67,13 @@ export const resumeReducer = (state = initialResumeState, action: ResumeActions)
         accomplishments: { ...state.accomplishments, ...newAccmp },
         loading: false,
         error: state.error,
+      };
+    case ResumeActionTypes.DeleteAccomplishmentSuccess:
+      return {
+        cards: state.cards,
+        accomplishments: { ...omit(state.accomplishments, action.payload) },
+        loading: false,
+        error: state.error
       };
       default:
         return state;
