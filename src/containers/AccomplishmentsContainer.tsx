@@ -3,23 +3,29 @@ import { IState } from '../reducers';
 import { connect } from 'react-redux';
 import Accomplishments from '../components/Accomplishments';
 import { Dispatch } from 'redux';
-import { AsyncUpdateAccomplishment, UpdateAccomplishmentActions } from '../actions';
+import { AsyncAddAccomplishment, AsyncUpdateAccomplishment, UpdateAccomplishmentActions } from '../actions';
+import { makeGetAccomplishmentsForEditor } from '../selectors';
 
-interface Props {
-  accomplishments: CardAccomplishment[] | undefined;
+interface OwnProps {
+  accomplishments?: CardAccomplishment[] | undefined;
   parentKey: string;
 }
 
-const mapStateToProps = (state: IState, props: Props) => ({
-  accomplishments: props.accomplishments,
-  parentKey: props.parentKey
-});
+const makeMapStateToProps = () => {
+  const getAccomplishments = makeGetAccomplishmentsForEditor();
+  const mapStateToProps = (state: IState, props: OwnProps) => ({
+    accomplishments: getAccomplishments(state, props.parentKey),
+    parentKey: props.parentKey
+  });
+  return mapStateToProps;
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<UpdateAccomplishmentActions>) => ({
-  updateAccomplishment: (na: CardAccomplishment) => dispatch(AsyncUpdateAccomplishment(na))
+  updateAccomplishment: (na: CardAccomplishment) => dispatch(AsyncUpdateAccomplishment(na)),
+  addAccomplishment: (na: CardAccomplishment) => dispatch(AsyncAddAccomplishment(na))
 });
 
 export default connect(
-    mapStateToProps,
+    makeMapStateToProps,
     mapDispatchToProps
 )(Accomplishments);

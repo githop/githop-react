@@ -42,7 +42,7 @@ const request = <T>(path: string, method: methods = 'GET', payload?: any, token?
   }
 
   let finalPath = path + (token ? '?auth=' + token : '').trim();
-  return fetch(BASE_URL + finalPath, config)
+  return fetch(BASE_URL + finalPath + '.json', config)
       .then((response: any) => {
         if (response.status !== 200) {
           return response.json().then((e: any) => Promise.reject(e));
@@ -118,7 +118,7 @@ if (localUser && localUser.stsTokenManager.accessToken) {
 
 export default class GithopBackend {
   static getResume(): Promise<IResumeState> {
-    return request('/resume.json')
+    return request('/resume')
         .then((resp: any) => mapStateToModels(resp))
         // .then(data => (console.log(data), data))
         .catch(e => e);
@@ -131,21 +131,31 @@ export default class GithopBackend {
 
   static updateCardContent(key: string, val: CardContent): Promise<CardContent> {
     // strip out client side accomplishments array to keep data normalized
-    return GithopBackend.updateField(key, 'contents', omit(val, 'accomplishments'))
+    return GithopBackend.updateField(key, 'contents', omit(val, 'key', 'accomplishments'))
         .then(resp => {
           return createInstance(CardContent, {...resp, ...{key}});
         });
   }
 
   static updateAccomplishment(key: string, val: CardAccomplishment): Promise<CardAccomplishment> {
-    return GithopBackend.updateField(key, 'accomplishments', val)
+    return GithopBackend.updateField(key, 'accomplishments', omit(val, 'key'))
         .then((resp: any) => {
           return createInstance(CardAccomplishment, {...resp, ...{key}});
         });
   }
 
   static updateField(field: string, type: 'accomplishments' | 'contents', val: any) {
-    const path = `/resume/${type}/${field}/.json`;
+    const path = `/resume/${type}/${field}`;
     return request(path, 'PATCH', val, tok);
+  }
+
+  static createAccomplishment(na: CardAccomplishment) {
+    return request('/resume/accomplishments', 'POST', na, tok)
+        .then((resp: any) => {
+          return createInstance(
+              CardAccomplishment,
+              Object.assign(na, { key: resp.name})
+          );
+        });
   }
 }

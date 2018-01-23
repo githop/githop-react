@@ -11,6 +11,9 @@ export enum ResumeActionTypes {
   UpdateAccomplishmentRequest = '[Resume] Update Accomplishment request',
   UpdateAccomplishmentSuccess = '[Resume] Update Accomplishment success',
   UpdateAccomplishmentFailure = '[Resume] Update Accomplishment failure',
+  AddAccomplishmentRequest = '[Resume] Add accomplishment request',
+  AddAccomplishmentSuccess = '[Resume] Add accomplishment success',
+  AddAccomplishmentFailure = '[Resume] Add accomplishment failure',
 }
 
 export class ResumeLoad {
@@ -47,6 +50,19 @@ export const AsyncUpdateAccomplishment = (na: CardAccomplishment) => {
       dispatch(updateAction.asObj);
     } catch (e) {
       dispatch(new UpdateAccomplishmentFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncAddAccomplishment = (na: CardAccomplishment) => {
+  return async (dispatch: Dispatch<AddAccomplishementActions>) => {
+    try {
+      dispatch(new AddAccomplishmentRequest().asObj);
+      const accmpModel = await GithopBackend.createAccomplishment(na);
+      const updateAction = new AddAccomplishmentSuccess(accmpModel);
+      dispatch(updateAction.asObj);
+    } catch (e) {
+      dispatch(new AddAccomplishmentFailure(e).asObj);
     }
   };
 };
@@ -124,6 +140,41 @@ export class UpdateAccomplishmentFailure implements Action {
   }
 }
 
+export class AddAccomplishmentRequest implements Action {
+  readonly type = ResumeActionTypes.AddAccomplishmentRequest;
+  get asObj() {
+    return {
+      type: this.type
+    };
+  }
+}
+
+export class AddAccomplishmentSuccess implements Action {
+  readonly type = ResumeActionTypes.AddAccomplishmentSuccess;
+  constructor(public payload: CardAccomplishment) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class AddAccomplishmentFailure implements Action {
+  readonly type = ResumeActionTypes.AddAccomplishmentFailure;
+  constructor(public payload: string) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export type AddAccomplishementActions = AddAccomplishmentRequest
+    | AddAccomplishmentSuccess
+    | AddAccomplishmentFailure;
+
 export type UpdateAccomplishmentActions = UpdateAccomplishmentRequest
     | UpdateAccomplishmentSuccess
     | UpdateAccomplishmentFailure;
@@ -135,4 +186,5 @@ export type UpdateCardActions = UpdateCardRequest
 export type ResumeActions = ResumeLoad
     | ResumeLoadSuccess
     | UpdateCardActions
-    | UpdateAccomplishmentActions;
+    | UpdateAccomplishmentActions
+    | AddAccomplishementActions;

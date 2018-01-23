@@ -6,6 +6,7 @@ interface Props {
   accomplishments: CardAccomplishment[];
   updateAccomplishment: (na: CardAccomplishment) => Promise<void>;
   updatePreview: (tna: any) => any;
+  addAccomplishment: (na: CardAccomplishment) => Promise<void>;
 }
 
 interface State {
@@ -24,6 +25,16 @@ export default class Accomplishments extends React.Component<Props, State> {
     };
     this.updateTempAccomplishment = this.updateTempAccomplishment.bind(this);
     this.addTempAccomplishment = this.addTempAccomplishment.bind(this);
+    this.dispatchAddAccomplishment = this.dispatchAddAccomplishment.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps: any) {
+    if (nextProps.accomplishments.length !== this.props.accomplishments.length) {
+      this.setState({
+        accomplishments: nextProps.accomplishments
+      });
+      this.props.updatePreview(nextProps.accomplishments);
+    }
   }
 
   render() {
@@ -72,10 +83,19 @@ export default class Accomplishments extends React.Component<Props, State> {
               onChange={this.updateTempAccomplishment}
           />
 
-          <button>Add</button>
+          <button onClick={this.dispatchAddAccomplishment}>Add</button>
           <button onClick={() => this.setState({tempAccomplishment: null})}>Delete</button>
         </div>
     );
+  }
+
+  private dispatchAddAccomplishment() {
+    if (this.state.tempAccomplishment != null) {
+      this.props.addAccomplishment(this.state.tempAccomplishment);
+      this.setState({
+        tempAccomplishment: null
+      });
+    }
   }
 
   private updateTempAccomplishment(e: any) {
@@ -87,7 +107,7 @@ export default class Accomplishments extends React.Component<Props, State> {
 
   private addTempAccomplishment() {
     const tempAccomplishment = createInstance(CardAccomplishment, {
-      text: 'i did this...',
+      text: '',
       parentKey: this.props.parentKey
     });
     this.setState({

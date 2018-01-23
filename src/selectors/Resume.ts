@@ -1,13 +1,13 @@
 import { IState } from '../reducers';
 import { createSelector } from 'reselect';
 import {
-  CardAccomplishment, CardContent, CardTypes, createInstance, ICardAccomplishmentsStore, ICardsStore,
+  CardAccomplishment,
+  CardContent, CardTypes, createInstance, ICardAccomplishmentsStore, ICardsStore,
   ResumeCard
 } from '../models';
 
 const getCards = (state: IState): ICardsStore => state.resume.cards;
 const getAccomplishments = (state: IState): ICardAccomplishmentsStore => state.resume.accomplishments;
-
 export const gatherCardAccomplishments = createSelector(
     getCards,
     getAccomplishments,
@@ -16,17 +16,15 @@ export const gatherCardAccomplishments = createSelector(
           (newCards: CardContent[], cardKey) => {
             const newCard = Object.assign(new CardContent(), cards[cardKey]);
             newCard.key = cardKey;
-            if (newCard.accomplishmentKeys != null) {
-              newCard.accomplishments = Object.keys(accomplishments).reduce(
-                  (accm: CardAccomplishment[], accmpKey: string) => {
-                    if (accomplishments[accmpKey].parentKey === cardKey) {
-                      accm.push(accomplishments[accmpKey]);
-                    }
-                    return accm;
-                  },
-                  []
-              );
-            }
+            newCard.accomplishments = Object.keys(accomplishments).reduce(
+                (accm: CardAccomplishment[], accmpKey: string) => {
+                  if (accomplishments[accmpKey].parentKey === cardKey) {
+                    accm.push(accomplishments[accmpKey]);
+                  }
+                  return accm;
+                },
+                []
+            );
             newCards.push(newCard);
             return newCards;
           },
@@ -114,18 +112,31 @@ export const makeGetAccomplishmentsForCard = () => {
       ({contentId, card}, accomplishments) => {
         const newCard = createInstance(CardContent, card);
         newCard.key = contentId;
-        if (newCard.accomplishmentKeys != null) {
-          newCard.accomplishments = Object.keys(accomplishments).reduce(
-              (accm: CardAccomplishment[], accmpKey: string) => {
-                if (accomplishments[accmpKey].parentKey === contentId) {
-                  accm.push(accomplishments[accmpKey]);
-                }
-                return accm;
-              },
-              []
-          );
-        }
+        Object.keys(accomplishments).forEach((accmpKey) => {
+          if (contentId === accomplishments[accmpKey].parentKey) {
+            newCard.accomplishments = newCard.accomplishments || [];
+            newCard.accomplishments.push(accomplishments[accmpKey]);
+          }
+        });
         return newCard;
+      }
+  );
+};
+
+export const makeGetAccomplishmentsForEditor = () => {
+  return createSelector(
+      getCard,
+      getAccomplishments,
+      ({contentId, card}, accomplishments) => {
+        const newCard = createInstance(CardContent, card);
+        newCard.key = contentId;
+        Object.keys(accomplishments).forEach((accmpKey) => {
+          if (contentId === accomplishments[accmpKey].parentKey) {
+            newCard.accomplishments = newCard.accomplishments || [];
+            newCard.accomplishments.push(accomplishments[accmpKey]);
+          }
+        });
+        return newCard.accomplishments;
       }
   );
 };
