@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { AsyncResumeLoad } from '../actions';
-import { Resume } from '../components/Resume';
 import { IState } from '../reducers';
 import { connect } from 'react-redux';
 import { ResumeCard } from '../models';
 import { Dispatch } from 'redux';
 import { makeGetResumeCards } from '../selectors';
-
+import { ResumeCardDetail } from '../components/ResumeCardDetail/ResumeCardDetail';
 interface Props {
   cards: ResumeCard[];
   fetchResume: () => Promise<void>;
@@ -22,7 +21,9 @@ class ResumeContainer extends React.Component<Props> {
 
   render() {
     return (
-        <Resume cards={this.props.cards}/>
+        <div className="page-root container">
+          {this.props.cards.map((card, i) => <ResumeCardDetail key={i} card={card}/>)}
+        </div>
     );
   }
 }

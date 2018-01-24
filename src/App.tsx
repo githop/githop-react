@@ -67,7 +67,6 @@ class App extends React.Component {
                       <br/>
                       <span className="link-text">Resume</span>
                     </Link>
-                    {/*<Link to="/login">Admin login</Link>*/}
                   </nav>
                 </div>
 
