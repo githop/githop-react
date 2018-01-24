@@ -1,8 +1,19 @@
-import { CardAccomplishment, CardContent, createInstance, IResumeState, User } from '../models';
+import { CardAccomplishment, CardContent, createInstance, IResumeState, mockUser, User } from '../models';
 import { getLocalUser } from './user-service';
+import { omit } from './index';
 
-const BASE_URL = 'https://githop-backend.firebaseio.com';
 const LOGIN_FUNCTION_URL = 'https://us-central1-githop-backend.cloudfunctions.net/login';
+
+const getApiUrl = () => {
+  let baseUrl = 'githop-backend.firebaseio.com';
+  let proto = 'https://';
+  if (process.env.NODE_ENV === 'development') {
+    baseUrl = 'dev-' + baseUrl;
+  }
+  return proto + baseUrl;
+};
+
+const BASE_URL = getApiUrl();
 
 type methods = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 const request = <T>(path: string, method: methods = 'GET', payload?: any, token?: string): Promise<T> => {
@@ -31,7 +42,7 @@ const request = <T>(path: string, method: methods = 'GET', payload?: any, token?
   }
 
   let finalPath = path + (token ? '?auth=' + token : '').trim();
-  return fetch(BASE_URL + finalPath, config)
+  return fetch(BASE_URL + finalPath + '.json', config)
       .then((response: any) => {
         if (response.status !== 200) {
           return response.json().then((e: any) => Promise.reject(e));
@@ -42,7 +53,10 @@ const request = <T>(path: string, method: methods = 'GET', payload?: any, token?
       .then((data) => data);
 };
 
-const loginRequest = <T>(payload: any): Promise<T> => {
+const loginRequest = (payload: any): Promise<any> => {
+  if (process.env.NODE_ENV === 'development') {
+    return Promise.resolve(mockUser);
+  }
   const headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
@@ -100,12 +114,11 @@ const localUser = getLocalUser();
 let tok: string | undefined;
 if (localUser && localUser.stsTokenManager.accessToken) {
   tok = localUser.stsTokenManager.accessToken;
-
 }
 
 export default class GithopBackend {
   static getResume(): Promise<IResumeState> {
-    return request('/resume.json')
+    return request('/resume')
         .then((resp: any) => mapStateToModels(resp))
         // .then(data => (console.log(data), data))
         .catch(e => e);
@@ -117,21 +130,46 @@ export default class GithopBackend {
   }
 
   static updateCardContent(key: string, val: CardContent): Promise<CardContent> {
-    return GithopBackend.updateField(key, 'contents', val)
+    // strip out client side accomplishments array to keep data normalized
+    return GithopBackend.updateField(key, 'contents', omit(val, 'key', 'accomplishments'))
         .then(resp => {
           return createInstance(CardContent, {...resp, ...{key}});
         });
   }
 
+  static addResumeCard(resumeCard: CardContent): Promise<CardContent> {
+    return request('/resume/contents', 'POST', resumeCard, tok)
+        .then((resp: any) => {
+          return createInstance(
+              CardContent,
+              Object.assign(resumeCard, { key: resp.name})
+          );
+        });
+  }
+
   static updateAccomplishment(key: string, val: CardAccomplishment): Promise<CardAccomplishment> {
-    return GithopBackend.updateField(key, 'accomplishments', val)
+    return GithopBackend.updateField(key, 'accomplishments', omit(val, 'key'))
         .then((resp: any) => {
           return createInstance(CardAccomplishment, {...resp, ...{key}});
         });
   }
 
   static updateField(field: string, type: 'accomplishments' | 'contents', val: any) {
-    const path = `/resume/${type}/${field}/.json`;
+    const path = `/resume/${type}/${field}`;
     return request(path, 'PATCH', val, tok);
+  }
+
+  static createAccomplishment(na: CardAccomplishment) {
+    return request('/resume/accomplishments', 'POST', na, tok)
+        .then((resp: any) => {
+          return createInstance(
+              CardAccomplishment,
+              Object.assign(na, { key: resp.name})
+          );
+        });
+  }
+
+  static deleteAccomplishment(accomplishmentKey: string) {
+    return request(`/resume/accomplishments/${accomplishmentKey}`, 'DELETE', null, tok);
   }
 }

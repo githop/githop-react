@@ -41,6 +41,13 @@ const ResumeEditor = Loadable({
   }
 });
 
+const AddResumeCard = Loadable({
+  loader: () => import('./containers/AddResumeCardContainer'),
+  loading() {
+    return <div>Loading...</div>;
+  }
+});
+
 class App extends React.Component {
   render() {
     return (
@@ -68,6 +75,7 @@ class App extends React.Component {
                   <Route exact={true} path="/" component={Home}/>
                   <Route exact={true} path="/resume" component={Resume}/>
                   <Route exact={true} path="/login" component={Login}/>
+                  <AuthenticatedRoute exact={true} path="/resume/add" component={AddResumeCard}/>
                   <AuthenticatedRoute path="/resume/:id/edit" component={ResumeEditor}/>
                 </Switch>
               </div>

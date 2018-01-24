@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { AsyncResumeLoad } from '../actions/Resume';
+import { AsyncResumeLoad } from '../actions';
 import { Resume } from '../components/Resume';
 import { IState } from '../reducers';
 import { connect } from 'react-redux';
-import { ResumeCard } from '../models/Resume';
-import { getResumeCards } from '../selectors/Resume';
+import { ResumeCard } from '../models';
 import { Dispatch } from 'redux';
+import { makeGetResumeCards } from '../selectors';
 
 interface Props {
   cards: ResumeCard[];
@@ -27,15 +27,19 @@ class ResumeContainer extends React.Component<Props> {
   }
 }
 
-const mapStateToProps = (state: IState) => ({
-  cards: getResumeCards(state)
-});
+const makeMapStateToProps = () => {
+  const getResumeCards = makeGetResumeCards();
+  const mapStateToProps = (state: IState) => ({
+    cards: getResumeCards(state)
+  });
+  return mapStateToProps;
+};
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   fetchResume: () => dispatch(AsyncResumeLoad())
 });
 
 export default connect(
-    mapStateToProps,
+    makeMapStateToProps,
     mapDispatchToProps
 )(ResumeContainer);

@@ -4,24 +4,35 @@ import { CardAccomplishment, CardContent, IResumeState } from '../models';
 
 export enum ResumeActionTypes {
   Load = '[Resume] Load',
-  LoadSuccess = '[Resume] Load Success',
+  LoadSuccess = '[Resume] Load success',
+  LoadFailure = '[Resume] Load failure',
+  AddCardRequest = '[Resume] Add card request',
+  AddCardSuccess = '[Resume] Add card success',
+  AddCardFailure = '[Resume] Add card failure',
   UpdateCardRequest = '[Resume] Update card request',
   UpdateCardSuccess = '[Resume] Update card success',
   UpdateCardFailure = '[Resume] Update card failure',
   UpdateAccomplishmentRequest = '[Resume] Update Accomplishment request',
   UpdateAccomplishmentSuccess = '[Resume] Update Accomplishment success',
   UpdateAccomplishmentFailure = '[Resume] Update Accomplishment failure',
-}
-
-export class ResumeLoad {
-  readonly type = ResumeActionTypes.Load;
+  AddAccomplishmentRequest = '[Resume] Add accomplishment request',
+  AddAccomplishmentSuccess = '[Resume] Add accomplishment success',
+  AddAccomplishmentFailure = '[Resume] Add accomplishment failure',
+  DeleteAccomplishmentRequest = '[Resume] Delete accomplishment request',
+  DeleteAccomplishmentSuccess = '[Resume] Delete accomplishment success',
+  DeleteAccomplishmentFailure = '[Resume] Delete accomplishment failure',
 }
 
 export const AsyncResumeLoad = () => {
-  return (dispatch: Dispatch<ResumeLoadSuccess>) => {
-    GithopBackend.getResume()
-        .then(resumeState => new ResumeLoadSuccess(resumeState))
-        .then(resumeSuccessAction => dispatch(resumeSuccessAction.asObj));
+  return async (dispatch: Dispatch<ResumeActions>) => {
+    try {
+      dispatch(new ResumeLoad().asObj);
+      const resumeModel = await GithopBackend.getResume();
+      const resumeAction = new ResumeLoadSuccess(resumeModel);
+      dispatch(resumeAction.asObj);
+    } catch (e) {
+      dispatch(new ResumeLoadFailure(e).asObj);
+    }
   };
 };
 
@@ -34,6 +45,19 @@ export const AsyncUpdateCard = (nc: CardContent) => {
       dispatch(updateAction.asObj);
     } catch (e) {
       dispatch(new UpdateCardFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncAddCard = (nc: CardContent) => {
+  return async (dispatch: Dispatch<AddCardActions>) => {
+    try {
+      dispatch(new AddCardRequest().asObj);
+      const cardModel = await GithopBackend.addResumeCard(nc);
+      const cardAction = new AddCardSuccess(cardModel);
+      dispatch(cardAction.asObj);
+    } catch (e) {
+      dispatch(new AddCardFailure(e).asObj);
     }
   };
 };
@@ -51,9 +75,85 @@ export const AsyncUpdateAccomplishment = (na: CardAccomplishment) => {
   };
 };
 
+export const AsyncAddAccomplishment = (na: CardAccomplishment) => {
+  return async (dispatch: Dispatch<AddAccomplishementActions>) => {
+    try {
+      dispatch(new AddAccomplishmentRequest().asObj);
+      const accmpModel = await GithopBackend.createAccomplishment(na);
+      const updateAction = new AddAccomplishmentSuccess(accmpModel);
+      dispatch(updateAction.asObj);
+    } catch (e) {
+      dispatch(new AddAccomplishmentFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncDeleteAccomplishment = (accomplishmentKey: string) => {
+  return async (dispatch: Dispatch<DeleteAccomplishementActions>) => {
+    try {
+      dispatch(new DeleteAccomplishmentRequest().asObj);
+      await GithopBackend.deleteAccomplishment(accomplishmentKey);
+      dispatch(new DeleteAccomplishmentSuccess(accomplishmentKey).asObj);
+    } catch (e) {
+      dispatch(new DeleteAccomplishmentFailure(e).asObj);
+    }
+  };
+};
+
+export class ResumeLoad implements Action {
+  readonly type = ResumeActionTypes.Load;
+  get asObj() {
+    return {
+      type: this.type,
+    };
+  }
+}
+
 export class ResumeLoadSuccess implements Action {
   readonly type = ResumeActionTypes.LoadSuccess;
   constructor(public payload: IResumeState ) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class ResumeLoadFailure implements Action {
+  readonly type = ResumeActionTypes.LoadFailure;
+  constructor(public payload: string ) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class AddCardRequest implements Action {
+  readonly type = ResumeActionTypes.AddCardRequest;
+  get asObj() {
+    return {
+      type: this.type
+    };
+  }
+}
+
+export class AddCardSuccess implements Action {
+  readonly type = ResumeActionTypes.AddCardSuccess;
+  constructor(public payload: CardContent) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class AddCardFailure implements Action {
+  readonly type = ResumeActionTypes.AddCardFailure;
+  constructor(public payload: string) {}
   get asObj() {
     return {
       type: this.type,
@@ -124,15 +224,93 @@ export class UpdateAccomplishmentFailure implements Action {
   }
 }
 
+export class AddAccomplishmentRequest implements Action {
+  readonly type = ResumeActionTypes.AddAccomplishmentRequest;
+  get asObj() {
+    return {
+      type: this.type
+    };
+  }
+}
+
+export class AddAccomplishmentSuccess implements Action {
+  readonly type = ResumeActionTypes.AddAccomplishmentSuccess;
+  constructor(public payload: CardAccomplishment) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class AddAccomplishmentFailure implements Action {
+  readonly type = ResumeActionTypes.AddAccomplishmentFailure;
+  constructor(public payload: string) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class DeleteAccomplishmentRequest implements Action {
+  readonly type = ResumeActionTypes.DeleteAccomplishmentRequest;
+  get asObj() {
+    return {
+      type: this.type
+    };
+  }
+}
+
+export class DeleteAccomplishmentSuccess implements Action {
+  readonly type = ResumeActionTypes.DeleteAccomplishmentSuccess;
+  constructor(public payload: string) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class DeleteAccomplishmentFailure implements Action {
+  readonly type = ResumeActionTypes.DeleteAccomplishmentFailure;
+  constructor(public payload: string) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export type DeleteAccomplishementActions = DeleteAccomplishmentRequest
+    | DeleteAccomplishmentSuccess
+    | DeleteAccomplishmentFailure;
+
+export type AddAccomplishementActions = AddAccomplishmentRequest
+    | AddAccomplishmentSuccess
+    | AddAccomplishmentFailure;
+
 export type UpdateAccomplishmentActions = UpdateAccomplishmentRequest
     | UpdateAccomplishmentSuccess
     | UpdateAccomplishmentFailure;
+
+export type AddCardActions = AddCardRequest
+    | AddCardSuccess
+    | AddCardFailure;
 
 export type UpdateCardActions = UpdateCardRequest
     | UpdateCardSuccess
     | UpdateCardFailure;
 
 export type ResumeActions = ResumeLoad
+    | ResumeLoadFailure
     | ResumeLoadSuccess
+    | AddCardActions
     | UpdateCardActions
-    | UpdateAccomplishmentActions;
+    | UpdateAccomplishmentActions
+    | AddAccomplishementActions
+    | DeleteAccomplishementActions;
