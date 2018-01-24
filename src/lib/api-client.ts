@@ -41,8 +41,8 @@ const request = <T>(path: string, method: methods = 'GET', payload?: any, token?
     );
   }
 
-  let finalPath = path + (token ? '?auth=' + token : '').trim();
-  return fetch(BASE_URL + finalPath + '.json', config)
+  let finalPath = path + (token ? '.json?auth=' + token : '.json').trim();
+  return fetch(BASE_URL + finalPath, config)
       .then((response: any) => {
         if (response.status !== 200) {
           return response.json().then((e: any) => Promise.reject(e));
