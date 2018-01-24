@@ -11,12 +11,16 @@ interface Props {
 
 interface State {
   editCard: CardContent;
+  isAdding: boolean;
 }
 export default class ResumeCardEditor extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { editCard: this.props.cardContent };
+    this.state = {
+      editCard: this.props.cardContent,
+      isAdding: this.props.cardContent.key == null
+    };
     this.onInputFieldChange = this.onInputFieldChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAccomplishementPreview = this.handleAccomplishementPreview.bind(this);
@@ -27,18 +31,13 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     return (
         <div className="page-root container resume-editor">
           <div className="editor-pane">
-            <h3>Edit Card</h3>
+            <h3>{this.state.isAdding ? 'Add' : 'Edit'}</h3>
             <form onSubmit={this.handleSubmit}>
               {this.renderCardTypeSelect()}
               {this.renderTitle()}
               {this.renderDate()}
               {this.renderDescription()}
-              <section>
-                <AccomplishmentsContainer
-                    parentKey={this.state.editCard.key}
-                    updatePreview={this.handleAccomplishementPreview}
-                />
-              </section>
+              {this.renderAddAccomplishments()}
               <button>save</button>
             </form>
           </div>
@@ -52,20 +51,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     );
   }
 
-  private handleAccomplishementPreview(a: any) {
-    const newCard = Object.assign({}, this.state.editCard);
-    newCard.accomplishments = a;
-    this.setState({
-      editCard: newCard
-    });
-  }
-
-  private handleSubmit(ev: any) {
-    ev.preventDefault();
-    this.props.updateContents(this.state.editCard);
-  }
-
-  private renderDate() {
+  renderDate() {
     return (
         <section>
           <label htmlFor="date">Date</label>
@@ -79,7 +65,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     );
   }
 
-  private renderTitle() {
+  renderTitle() {
     return (
         <section>
           <label htmlFor="title">Title</label>
@@ -102,7 +88,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     );
   }
 
-  private renderDescription() {
+  renderDescription() {
     return (
         <section>
           <label htmlFor="description">Description</label>
@@ -115,6 +101,51 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
           />
         </section>
     );
+  }
+
+  renderCardTypeSelect() {
+    return (
+        <label htmlFor="cardSelect">Card Type
+          <select onChange={this.onSelectChange} id="cardSelect" value={this.state.editCard.type}>
+            {this.renderTypeSelectOptions()}
+          </select>
+        </label>
+    );
+  }
+
+  renderAddAccomplishments() {
+    if (this.state.isAdding) {
+      return null;
+    }
+
+    return (
+        <section>
+          <AccomplishmentsContainer
+              parentKey={this.state.editCard.key}
+              updatePreview={this.handleAccomplishementPreview}
+          />
+        </section>
+    );
+  }
+
+  renderTypeSelectOptions() {
+    const cardTypes = ['experience', 'sideProjects', 'talks', 'startup', 'education', 'other'];
+    return cardTypes.map(t => {
+      return <option key={t} value={t}>{titleMap[t]}</option>;
+    });
+  }
+
+  private handleAccomplishementPreview(a: any) {
+    const newCard = Object.assign({}, this.state.editCard);
+    newCard.accomplishments = a;
+    this.setState({
+      editCard: newCard
+    });
+  }
+
+  private handleSubmit(ev: any) {
+    ev.preventDefault();
+    this.props.updateContents(this.state.editCard);
   }
   
   private onInputFieldChange(event: any) {
@@ -130,23 +161,6 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     newCard.type = value;
     this.setState({
       editCard: newCard
-    });
-  }
-
-  private renderCardTypeSelect() {
-    return (
-        <label htmlFor="cardSelect">Card Type
-        <select onChange={this.onSelectChange} id="cardSelect" value={this.state.editCard.type}>
-          {this.renderTypeSelectOptions()}
-        </select>
-        </label>
-    );
-  }
-
-  private renderTypeSelectOptions() {
-    const cardTypes = ['experience', 'sideProjects', 'talks', 'startup', 'education', 'other'];
-    return cardTypes.map(t => {
-      return <option key={t} value={t}>{titleMap[t]}</option>;
     });
   }
 }

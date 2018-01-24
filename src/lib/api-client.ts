@@ -137,6 +137,16 @@ export default class GithopBackend {
         });
   }
 
+  static addResumeCard(resumeCard: CardContent): Promise<CardContent> {
+    return request('/resume/contents', 'POST', resumeCard, tok)
+        .then((resp: any) => {
+          return createInstance(
+              CardContent,
+              Object.assign(resumeCard, { key: resp.name})
+          );
+        });
+  }
+
   static updateAccomplishment(key: string, val: CardAccomplishment): Promise<CardAccomplishment> {
     return GithopBackend.updateField(key, 'accomplishments', omit(val, 'key'))
         .then((resp: any) => {

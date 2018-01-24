@@ -6,6 +6,9 @@ export enum ResumeActionTypes {
   Load = '[Resume] Load',
   LoadSuccess = '[Resume] Load success',
   LoadFailure = '[Resume] Load failure',
+  AddCardRequest = '[Resume] Add card request',
+  AddCardSuccess = '[Resume] Add card success',
+  AddCardFailure = '[Resume] Add card failure',
   UpdateCardRequest = '[Resume] Update card request',
   UpdateCardSuccess = '[Resume] Update card success',
   UpdateCardFailure = '[Resume] Update card failure',
@@ -42,6 +45,19 @@ export const AsyncUpdateCard = (nc: CardContent) => {
       dispatch(updateAction.asObj);
     } catch (e) {
       dispatch(new UpdateCardFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncAddCard = (nc: CardContent) => {
+  return async (dispatch: Dispatch<AddCardActions>) => {
+    try {
+      dispatch(new AddCardRequest().asObj);
+      const cardModel = await GithopBackend.addResumeCard(nc);
+      const cardAction = new AddCardSuccess(cardModel);
+      dispatch(cardAction.asObj);
+    } catch (e) {
+      dispatch(new AddCardFailure(e).asObj);
     }
   };
 };
@@ -107,6 +123,37 @@ export class ResumeLoadSuccess implements Action {
 export class ResumeLoadFailure implements Action {
   readonly type = ResumeActionTypes.LoadFailure;
   constructor(public payload: string ) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class AddCardRequest implements Action {
+  readonly type = ResumeActionTypes.AddCardRequest;
+  get asObj() {
+    return {
+      type: this.type
+    };
+  }
+}
+
+export class AddCardSuccess implements Action {
+  readonly type = ResumeActionTypes.AddCardSuccess;
+  constructor(public payload: CardContent) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class AddCardFailure implements Action {
+  readonly type = ResumeActionTypes.AddCardFailure;
+  constructor(public payload: string) {}
   get asObj() {
     return {
       type: this.type,
@@ -251,6 +298,10 @@ export type UpdateAccomplishmentActions = UpdateAccomplishmentRequest
     | UpdateAccomplishmentSuccess
     | UpdateAccomplishmentFailure;
 
+export type AddCardActions = AddCardRequest
+    | AddCardSuccess
+    | AddCardFailure;
+
 export type UpdateCardActions = UpdateCardRequest
     | UpdateCardSuccess
     | UpdateCardFailure;
@@ -258,6 +309,7 @@ export type UpdateCardActions = UpdateCardRequest
 export type ResumeActions = ResumeLoad
     | ResumeLoadFailure
     | ResumeLoadSuccess
+    | AddCardActions
     | UpdateCardActions
     | UpdateAccomplishmentActions
     | AddAccomplishementActions
