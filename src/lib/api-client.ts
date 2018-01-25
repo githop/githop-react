@@ -110,11 +110,14 @@ const mapStateToModels = ({ accomplishments, contents }: IResumeResponse): Parti
   return { accomplishments, cards: contents };
 };
 
-const localUser = getLocalUser();
-let tok: string | undefined;
-if (localUser && localUser.stsTokenManager.accessToken) {
-  tok = localUser.stsTokenManager.accessToken;
-}
+const getToken = () => {
+  const localUser = getLocalUser();
+  let tok: string | undefined;
+  if (localUser && localUser.stsTokenManager.accessToken) {
+    tok = localUser.stsTokenManager.accessToken;
+  }
+  return tok;
+};
 
 export default class GithopBackend {
   static getResume(): Promise<IResumeState> {
@@ -138,7 +141,7 @@ export default class GithopBackend {
   }
 
   static addResumeCard(resumeCard: CardContent): Promise<CardContent> {
-    return request('/resume/contents', 'POST', resumeCard, tok)
+    return request('/resume/contents', 'POST', resumeCard, getToken())
         .then((resp: any) => {
           return createInstance(
               CardContent,
@@ -156,11 +159,11 @@ export default class GithopBackend {
 
   static updateField(field: string, type: 'accomplishments' | 'contents', val: any) {
     const path = `/resume/${type}/${field}`;
-    return request(path, 'PATCH', val, tok);
+    return request(path, 'PATCH', val, getToken());
   }
 
   static createAccomplishment(na: CardAccomplishment) {
-    return request('/resume/accomplishments', 'POST', na, tok)
+    return request('/resume/accomplishments', 'POST', na, getToken())
         .then((resp: any) => {
           return createInstance(
               CardAccomplishment,
@@ -170,6 +173,6 @@ export default class GithopBackend {
   }
 
   static deleteAccomplishment(accomplishmentKey: string) {
-    return request(`/resume/accomplishments/${accomplishmentKey}`, 'DELETE', null, tok);
+    return request(`/resume/accomplishments/${accomplishmentKey}`, 'DELETE', null, getToken());
   }
 }
