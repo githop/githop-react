@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.17.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-loadable": "^5.3.1",
@@ -16,7 +15,8 @@
   },
   "scripts": {
     "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "build": "react-scripts-ts build && ",
+    "service-worker": "./node_modules/.bin/sw-precache --config=sw-precache-config.js",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "deploy": "yarn build && firebase deploy --only hosting"
@@ -30,6 +30,7 @@
     "@types/react-redux": "^5.0.14",
     "@types/react-router": "^4.0.20",
     "@types/react-router-dom": "^4.2.3",
-    "@types/reselect": "^2.2.0"
+    "@types/reselect": "^2.2.0",
+    "sw-precache": "^5.2.1"
   }
 }
