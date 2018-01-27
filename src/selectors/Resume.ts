@@ -12,6 +12,9 @@ export const gatherCardAccomplishments = createSelector(
     getCards,
     getAccomplishments,
     (cards: ICardsStore, accomplishments: ICardAccomplishmentsStore): CardContent[] => {
+      if (cards == null) {
+        return [];
+      }
       return Object.keys(cards).reduce(
           (newCards: CardContent[], cardKey) => {
             const newCard = Object.assign(new CardContent(), cards[cardKey]);

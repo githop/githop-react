@@ -5,6 +5,12 @@ module.exports = {
     'build/manifest.json',
     'build/static/**/!(*map*)'
   ],
-  dontCacheBustUrlsMatching: /\.\w{8}\./,
-  swFilePath: 'build/service-worker.js'
+  runtimeCaching: [
+    {
+      "urlPattern": /https:\/\/githop-backend.firebaseio.com\/resume\.json/,
+      "handler": "cacheFirst"
+    }
+  ],
+  swFilePath: 'build/service-worker.js',
+  dontCacheBustUrlsMatching: /\.\w{8}\./
 };
