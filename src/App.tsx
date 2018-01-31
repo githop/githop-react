@@ -44,7 +44,7 @@ class App extends React.Component {
               <div className="gth-content">
                 <div className="gth-nav-buffer">
                   <nav className="gth-nav">
-                    <Link to="/">
+                    <Link className="gth-nav-link" to="/">
                       <span className="--gth-emoji">🏠</span>
                       <br/>
                       <span className="link-text">Home</span>
