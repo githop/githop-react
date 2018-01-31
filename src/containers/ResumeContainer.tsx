@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 import { ResumeCard } from '../models';
 import { Dispatch } from 'redux';
 import { makeGetResumeCards } from '../selectors';
-import { ResumeCardDetail } from '../components/ResumeCardDetail/ResumeCardDetail';
+import Resume from '../components/Resume/Resume';
 interface Props {
   cards: ResumeCard[];
   fetchResume: () => Promise<void>;
+  loading: boolean;
+  error: string;
 }
 
 class ResumeContainer extends React.Component<Props> {
@@ -21,9 +23,11 @@ class ResumeContainer extends React.Component<Props> {
 
   render() {
     return (
-        <div className="page-root container">
-          {this.props.cards.map((card, i) => <ResumeCardDetail key={i} card={card}/>)}
-        </div>
+        <Resume
+            cards={this.props.cards}
+            loading={this.props.loading}
+            error={this.props.error}
+        />
     );
   }
 }
@@ -31,7 +35,9 @@ class ResumeContainer extends React.Component<Props> {
 const makeMapStateToProps = () => {
   const getResumeCards = makeGetResumeCards();
   const mapStateToProps = (state: IState) => ({
-    cards: getResumeCards(state)
+    cards: getResumeCards(state),
+    loading: state.resume.loading,
+    error: state.resume.error
   });
   return mapStateToProps;
 };
