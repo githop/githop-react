@@ -62,6 +62,10 @@ function registerValidSW(swUrl: string) {
                 // It's the perfect time to display a 'New content is
                 // available; please refresh.' message in your web app.
                 console.log('New content is available; please refresh.');
+                const confirmation = `Look's like Tom's been busy, please refresh to get updates!`;
+                if (window.confirm(confirmation)) {
+                  window.location.reload();
+                }
               } else {
                 // At this point, everything has been precached.
                 // It's the perfect time to display a

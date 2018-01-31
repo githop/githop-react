@@ -23,83 +23,6 @@ export enum ResumeActionTypes {
   DeleteAccomplishmentFailure = '[Resume] Delete accomplishment failure',
 }
 
-export const AsyncResumeLoad = () => {
-  return async (dispatch: Dispatch<ResumeActions>) => {
-    try {
-      dispatch(new ResumeLoad().asObj);
-      const resumeModel = await GithopBackend.getResume();
-      const resumeAction = new ResumeLoadSuccess(resumeModel);
-      dispatch(resumeAction.asObj);
-    } catch (e) {
-      dispatch(new ResumeLoadFailure(e).asObj);
-    }
-  };
-};
-
-export const AsyncUpdateCard = (nc: CardContent) => {
-  return async (dispatch: Dispatch<UpdateCardActions>) => {
-    try {
-      dispatch(new UpdateCardRequest().asObj);
-      const newContents = await GithopBackend.updateCardContent(nc.key, nc);
-      const updateAction = new UpdateCardSuccess(newContents);
-      dispatch(updateAction.asObj);
-    } catch (e) {
-      dispatch(new UpdateCardFailure(e).asObj);
-    }
-  };
-};
-
-export const AsyncAddCard = (nc: CardContent) => {
-  return async (dispatch: Dispatch<AddCardActions>) => {
-    try {
-      dispatch(new AddCardRequest().asObj);
-      const cardModel = await GithopBackend.addResumeCard(nc);
-      const cardAction = new AddCardSuccess(cardModel);
-      dispatch(cardAction.asObj);
-    } catch (e) {
-      dispatch(new AddCardFailure(e).asObj);
-    }
-  };
-};
-
-export const AsyncUpdateAccomplishment = (na: CardAccomplishment) => {
-  return async (dispatch: Dispatch<UpdateCardActions>) => {
-    try {
-      dispatch(new UpdateAccomplishmentRequest().asObj);
-      const accmpModel = await GithopBackend.updateAccomplishment(na.key, na);
-      const updateAction = new UpdateAccomplishmentSuccess(accmpModel);
-      dispatch(updateAction.asObj);
-    } catch (e) {
-      dispatch(new UpdateAccomplishmentFailure(e).asObj);
-    }
-  };
-};
-
-export const AsyncAddAccomplishment = (na: CardAccomplishment) => {
-  return async (dispatch: Dispatch<AddAccomplishementActions>) => {
-    try {
-      dispatch(new AddAccomplishmentRequest().asObj);
-      const accmpModel = await GithopBackend.createAccomplishment(na);
-      const updateAction = new AddAccomplishmentSuccess(accmpModel);
-      dispatch(updateAction.asObj);
-    } catch (e) {
-      dispatch(new AddAccomplishmentFailure(e).asObj);
-    }
-  };
-};
-
-export const AsyncDeleteAccomplishment = (accomplishmentKey: string) => {
-  return async (dispatch: Dispatch<DeleteAccomplishementActions>) => {
-    try {
-      dispatch(new DeleteAccomplishmentRequest().asObj);
-      await GithopBackend.deleteAccomplishment(accomplishmentKey);
-      dispatch(new DeleteAccomplishmentSuccess(accomplishmentKey).asObj);
-    } catch (e) {
-      dispatch(new DeleteAccomplishmentFailure(e).asObj);
-    }
-  };
-};
-
 export class ResumeLoad implements Action {
   readonly type = ResumeActionTypes.Load;
   get asObj() {
@@ -314,3 +237,80 @@ export type ResumeActions = ResumeLoad
     | UpdateAccomplishmentActions
     | AddAccomplishementActions
     | DeleteAccomplishementActions;
+
+export const AsyncResumeLoad = () => {
+  return async (dispatch: Dispatch<ResumeActions>) => {
+    try {
+      dispatch(new ResumeLoad().asObj);
+      const resumeModel = await GithopBackend.getResume();
+      const resumeAction = new ResumeLoadSuccess(resumeModel);
+      dispatch(resumeAction.asObj);
+    } catch (e) {
+      dispatch(new ResumeLoadFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncUpdateCard = (nc: CardContent) => {
+  return async (dispatch: Dispatch<UpdateCardActions>) => {
+    try {
+      dispatch(new UpdateCardRequest().asObj);
+      const newContents = await GithopBackend.updateCardContent(nc.key, nc);
+      const updateAction = new UpdateCardSuccess(newContents);
+      dispatch(updateAction.asObj);
+    } catch (e) {
+      dispatch(new UpdateCardFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncAddCard = (nc: CardContent) => {
+  return async (dispatch: Dispatch<AddCardActions>) => {
+    try {
+      dispatch(new AddCardRequest().asObj);
+      const cardModel = await GithopBackend.addResumeCard(nc);
+      const cardAction = new AddCardSuccess(cardModel);
+      dispatch(cardAction.asObj);
+    } catch (e) {
+      dispatch(new AddCardFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncUpdateAccomplishment = (na: CardAccomplishment) => {
+  return async (dispatch: Dispatch<UpdateCardActions>) => {
+    try {
+      dispatch(new UpdateAccomplishmentRequest().asObj);
+      const accmpModel = await GithopBackend.updateAccomplishment(na.key, na);
+      const updateAction = new UpdateAccomplishmentSuccess(accmpModel);
+      dispatch(updateAction.asObj);
+    } catch (e) {
+      dispatch(new UpdateAccomplishmentFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncAddAccomplishment = (na: CardAccomplishment) => {
+  return async (dispatch: Dispatch<AddAccomplishementActions>) => {
+    try {
+      dispatch(new AddAccomplishmentRequest().asObj);
+      const accmpModel = await GithopBackend.createAccomplishment(na);
+      const updateAction = new AddAccomplishmentSuccess(accmpModel);
+      dispatch(updateAction.asObj);
+    } catch (e) {
+      dispatch(new AddAccomplishmentFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncDeleteAccomplishment = (accomplishmentKey: string) => {
+  return async (dispatch: Dispatch<DeleteAccomplishementActions>) => {
+    try {
+      dispatch(new DeleteAccomplishmentRequest().asObj);
+      await GithopBackend.deleteAccomplishment(accomplishmentKey);
+      dispatch(new DeleteAccomplishmentSuccess(accomplishmentKey).asObj);
+    } catch (e) {
+      dispatch(new DeleteAccomplishmentFailure(e).asObj);
+    }
+  };
+};

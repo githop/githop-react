@@ -8,44 +8,30 @@ import {
   NavLink as Link,
   Switch
 } from 'react-router-dom';
-import Loadable from 'react-loadable';
+import * as Loadable from 'react-loadable';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
-
-const Home = Loadable({
-  loader: () => import('./components/home/Home'),
-  loading() {
-    return <div>Loading...</div>;
-  }
-});
+import Home from './components/home/Home';
 
 const Resume = Loadable({
   loader: () => import('./containers/ResumeContainer'),
-  loading() {
-    return <div>Loading...</div>;
-  }
+  loading: () => <div>Loading...</div>
 });
 
 const Login = Loadable({
   loader: () => import('./containers/LoginContainer'),
-  loading() {
-    return <div>Loading...</div>;
-  }
+  loading: () => <div>Loading...</div>
 });
 
 const ResumeEditor = Loadable({
   loader: () => import('./containers/ResumeCardEditorContainer'),
-  loading() {
-    return <div>Loading...</div>;
-  }
+  loading: () => <div>Loading...</div>
 });
 
 const AddResumeCard = Loadable({
   loader: () => import('./containers/AddResumeCardContainer'),
-  loading() {
-    return <div>Loading...</div>;
-  }
+  loading: () => <div>Loading...</div>
 });
 
 class App extends React.Component {

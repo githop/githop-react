@@ -30,13 +30,15 @@ const formatAccomplishments = (accomplishments: CardAccomplishment[] | undefined
 
 const ResumeCardContents: React.StatelessComponent<Props> = (props: Props) => {
   const content = props.cardContent;
+  const formattedTitle =
+      content.link ? formatContentLinkTitle(content) : formatContentTitle(content);
   return (
       <div className="gth-card-contents">
         <AdminLinkContainer to={`/resume/${content.key}/edit`}>
           Edit
         </AdminLinkContainer>
         <div className="gth-card-header">
-          <h3>{content.link ? formatContentLinkTitle(content) : formatContentTitle(content)}</h3>
+          <h3>{formattedTitle}</h3>
           <p><code>{content.date}</code></p>
         </div>
         <h4>{content.position}</h4>
