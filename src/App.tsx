@@ -17,7 +17,7 @@ import Loading from './components/Loading/Loading';
 
 const Resume = Loadable({
   loader: () => import('./containers/ResumeContainer'),
-  loading: () => <Loading message="Loading resume"/>
+  loading: () => <Loading/>
 });
 
 const Login = Loadable({
