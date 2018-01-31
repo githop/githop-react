@@ -13,25 +13,26 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Home from './components/home/Home';
+import Loading from './components/Loading/Loading';
 
 const Resume = Loadable({
   loader: () => import('./containers/ResumeContainer'),
-  loading: () => <div>Loading...</div>
+  loading: () => <Loading message="Loading resume"/>
 });
 
 const Login = Loadable({
   loader: () => import('./containers/LoginContainer'),
-  loading: () => <div>Loading...</div>
+  loading: () => <Loading/>
 });
 
 const ResumeEditor = Loadable({
   loader: () => import('./containers/ResumeCardEditorContainer'),
-  loading: () => <div>Loading...</div>
+  loading: () => <Loading/>
 });
 
 const AddResumeCard = Loadable({
   loader: () => import('./containers/AddResumeCardContainer'),
-  loading: () => <div>Loading...</div>
+  loading: () => <Loading/>
 });
 
 class App extends React.Component {
