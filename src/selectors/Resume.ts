@@ -42,9 +42,12 @@ type GroupedCards = {
 
 const sortCardContents = (contents: CardContent[]): CardContent[] => {
   return contents.sort((a, b) => {
-    const aDateParsed = a.sortDate.replace(/-/g, ',');
-    const bDateParsed = b.sortDate.replace(/-/g, ',');
-    return +new Date(bDateParsed) - +new Date(aDateParsed);
+    if (a.sortDate != null && b.sortDate != null) {
+      const aDateParsed = a.sortDate.replace(/-/g, ',');
+      const bDateParsed = b.sortDate.replace(/-/g, ',');
+      return +new Date(bDateParsed) - +new Date(aDateParsed);
+    }
+    return 0;
   });
 };
 
