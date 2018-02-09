@@ -3,6 +3,7 @@ import * as React from 'react';
 import { ResumeCard } from '../../models';
 import { ResumeCardDetail } from '../ResumeCardDetail/ResumeCardDetail';
 import Loading from '../Loading/Loading';
+import AdminLinkContainer from '../../containers/AdminLinkContainer';
 
 interface Props {
   cards: ResumeCard[];
@@ -28,6 +29,7 @@ const Resume: React.StatelessComponent<Props> = (props: Props) => {
 
   return (
       <div className="page-root container">
+        <AdminLinkContainer to="/resume/add">Add Card</AdminLinkContainer>
         {renderPage()}
       </div>
   );

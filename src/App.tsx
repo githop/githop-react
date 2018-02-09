@@ -5,7 +5,8 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Route,
-  NavLink as Link,
+  NavLink,
+  Link,
   Switch
 } from 'react-router-dom';
 import * as Loadable from 'react-loadable';
@@ -44,16 +45,16 @@ class App extends React.Component {
               <div className="gth-content">
                 <div className="gth-nav-buffer">
                   <nav className="gth-nav">
-                    <Link className="gth-nav-link" to="/">
+                    <NavLink className="gth-nav-link" to="/">
                       <span className="--gth-emoji">🏠</span>
                       <br/>
                       <span className="link-text">Home</span>
-                    </Link>
-                    <Link to="/resume">
+                    </NavLink>
+                    <NavLink to="/resume">
                       <span className="--gth-emoji">💼</span>
                       <br/>
                       <span className="link-text">Resume</span>
-                    </Link>
+                    </NavLink>
                   </nav>
                 </div>
 
@@ -68,6 +69,7 @@ class App extends React.Component {
               <footer className="gth-footer">
                 Built with love by&nbsp;
                 <a target="_blank" rel="noopener noreferrer" href="https://github.com/githop/githop-react">githop</a>
+                <span><Link to="/login">Admin</Link></span>
               </footer>
             </div>
           </Router>

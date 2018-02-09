@@ -6,6 +6,7 @@ export class CardContent {
   title: string;
   link?: string;
   date: string;
+  sortDate?: any;
   description: string;
   position?: string;
   accomplishments?: CardAccomplishment[];

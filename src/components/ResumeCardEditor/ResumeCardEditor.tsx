@@ -25,6 +25,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleAccomplishementPreview = this.handleAccomplishementPreview.bind(this);
     this.onSelectChange = this.onSelectChange.bind(this);
+    this.onDateFieldChange = this.onDateFieldChange.bind(this);
   }
 
   render() {
@@ -35,7 +36,8 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
             <form onSubmit={this.handleSubmit}>
               {this.renderCardTypeSelect()}
               {this.renderTitle()}
-              {this.renderDate()}
+              {this.renderDates()}
+              {this.renderPosition()}
               {this.renderDescription()}
               {this.renderAddAccomplishments()}
               <button>save</button>
@@ -51,7 +53,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     );
   }
 
-  renderDate() {
+  renderDates() {
     return (
         <section>
           <label htmlFor="date">Date</label>
@@ -60,6 +62,13 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
               value={this.state.editCard.date}
               type="text"
               onChange={this.onInputFieldChange}
+          />
+          <label htmlFor="sortDate">Sort Date</label>
+          <input
+              name="sortDate"
+              value={this.state.editCard.sortDate}
+              type="date"
+              onChange={this.onDateFieldChange}
           />
         </section>
     );
@@ -82,6 +91,21 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
               id="link"
               value={this.state.editCard.link}
               type="url"
+              onChange={this.onDateFieldChange}
+          />
+        </section>
+    );
+  }
+
+  renderPosition() {
+    return (
+        <section>
+          <label>Position</label>
+          <input
+              name="position"
+              id="position"
+              value={this.state.editCard.position}
+              type="text"
               onChange={this.onInputFieldChange}
           />
         </section>
@@ -149,6 +173,14 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
   }
   
   private onInputFieldChange(event: any) {
+    const { target: { name, value } } = event;
+    this.setState({
+      editCard: { ...this.state.editCard, ...{ [name]: value } }
+    });
+  }
+
+  private onDateFieldChange(event: any) {
+    event.preventDefault();
     const { target: { name, value } } = event;
     this.setState({
       editCard: { ...this.state.editCard, ...{ [name]: value } }

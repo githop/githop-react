@@ -87,3 +87,8 @@
   text-align: center;
   height: 2rem;
 }
+
+.gth-footer span {
+  float: left;
+  padding-left: 0.5rem;
+}

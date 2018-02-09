@@ -17,7 +17,7 @@ export const gatherCardAccomplishments = createSelector(
       }
       return Object.keys(cards).reduce(
           (newCards: CardContent[], cardKey) => {
-            const newCard = Object.assign(new CardContent(), cards[cardKey]);
+            const newCard = createInstance(CardContent, cards[cardKey]);
             newCard.key = cardKey;
             newCard.accomplishments = Object.keys(accomplishments).reduce(
                 (accm: CardAccomplishment[], accmpKey: string) => {
@@ -40,6 +40,14 @@ type GroupedCards = {
   [K in CardTypes]: CardContent[];
 };
 
+const sortCardContents = (contents: CardContent[]): CardContent[] => {
+  return contents.sort((a, b) => {
+    const aDateParsed = a.sortDate.replace(/-/g, ',');
+    const bDateParsed = b.sortDate.replace(/-/g, ',');
+    return +new Date(bDateParsed) - +new Date(aDateParsed);
+  });
+};
+
 export const groupByCardType = createSelector(
     gatherCardAccomplishments,
     (cards: CardContent[]): ResumeCard[] => {
@@ -55,9 +63,12 @@ export const groupByCardType = createSelector(
           {}
       );
       return Object.keys(grouped)
-          .map((key: string) => {
-            return Object.assign(new ResumeCard(), {type: key, content: grouped[key]});
-          });
+          .map(
+              (key: string) => createInstance(
+                  ResumeCard,
+                  {type: key, content: sortCardContents(grouped[key])}
+              )
+          );
     }
 );
 
