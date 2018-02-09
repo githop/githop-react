@@ -8,7 +8,7 @@ module.exports = {
   runtimeCaching: [
     {
       "urlPattern": /https:\/\/githop-backend.firebaseio.com\/resume\.json/,
-      "handler": "cacheFirst"
+      "handler": "networkFirst"
     }
   ],
   swFilePath: 'build/service-worker.js',
