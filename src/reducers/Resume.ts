@@ -17,6 +17,7 @@ export const resumeReducer = (state = initialResumeState, action: ResumeActions)
     case ResumeActionTypes.AddAccomplishmentRequest:
     case ResumeActionTypes.DeleteAccomplishmentRequest:
     case ResumeActionTypes.AddCardRequest:
+    case ResumeActionTypes.DeleteCardRequest:
       return {
         cards: state.cards,
         accomplishments: state.accomplishments,
@@ -28,6 +29,7 @@ export const resumeReducer = (state = initialResumeState, action: ResumeActions)
     case ResumeActionTypes.AddAccomplishmentFailure:
     case ResumeActionTypes.DeleteAccomplishmentFailure:
     case ResumeActionTypes.AddCardFailure:
+    case ResumeActionTypes.DeleteCardFailure:
       return {
         cards: state.cards,
         accomplishments: state.accomplishments,
@@ -74,6 +76,13 @@ export const resumeReducer = (state = initialResumeState, action: ResumeActions)
       return {
         cards: state.cards,
         accomplishments: { ...omit(state.accomplishments, action.payload) },
+        loading: false,
+        error: state.error
+      };
+    case ResumeActionTypes.DeleteCardSuccess:
+      return {
+        cards: { ...omit(state.cards, action.payload) },
+        accomplishments: state.accomplishments,
         loading: false,
         error: state.error
       };

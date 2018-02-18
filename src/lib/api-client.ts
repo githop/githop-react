@@ -172,7 +172,11 @@ export default class GithopBackend {
         });
   }
 
-  static deleteAccomplishment(accomplishmentKey: string) {
+  static deleteAccomplishment(accomplishmentKey: string): Promise<void> {
     return request(`/resume/accomplishments/${accomplishmentKey}`, 'DELETE', null, getToken());
+  }
+
+  static deleteCard(cardKey: string): Promise<void> {
+    return request(`/resume/contents/${cardKey}`, 'DELETE', null, getToken());
   }
 }

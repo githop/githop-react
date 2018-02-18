@@ -6,12 +6,13 @@ import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
 import { makeGetAccomplishmentsForCard } from '../selectors';
 import { Dispatch } from 'redux';
-import { AsyncResumeLoad, AsyncUpdateCard } from '../actions';
+import { AsyncDeleteCard, AsyncResumeLoad, AsyncUpdateCard } from '../actions';
 
 interface Props extends RouteComponentProps<{ id: string }> {
   cardContent: CardContent;
   fetchResume: () => Promise<void>;
   updateContents: (nc: CardContent) => Promise<void>;
+  deleteCard: (rmCard: CardContent) => Promise<void>;
 }
 
 class ResumeCardEditorContainer extends React.Component<Props, {}> {
@@ -28,6 +29,7 @@ class ResumeCardEditorContainer extends React.Component<Props, {}> {
         <ResumeCardEditor
             cardContent={this.props.cardContent}
             updateContents={(nc) => this.props.updateContents(nc)}
+            deleteCard={(rmCard) => this.props.deleteCard(rmCard)}
         />
     );
   }
@@ -46,7 +48,8 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   fetchResume: () => dispatch(AsyncResumeLoad()),
-  updateContents: (nc: CardContent) => dispatch(AsyncUpdateCard(nc))
+  updateContents: (nc: CardContent) => dispatch(AsyncUpdateCard(nc)),
+  deleteCard: (rmCard: CardContent) => dispatch(AsyncDeleteCard(rmCard))
 });
 
 export default connect(

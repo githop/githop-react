@@ -31,7 +31,7 @@ export default class Accomplishments extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: any) {
-    if (nextProps.accomplishments.length !== this.props.accomplishments.length) {
+    if (nextProps.accomplishments && nextProps.accomplishments.length !== this.props.accomplishments.length) {
       this.setState({
         accomplishments: nextProps.accomplishments
       });
@@ -64,7 +64,11 @@ export default class Accomplishments extends React.Component<Props, State> {
                 onChange={(e) => this.handleInputFieldChange(e, a)}
             />
             <button onClick={(e) => this.dispatchUpdate(e, a)}>update</button>
-            <button onClick={(e) => this.dispatchDeleteAccomplishment(e, a.key)}>Delete</button>
+            <button
+                className="button-primary"
+                onClick={(e) => this.dispatchDeleteAccomplishment(e, a.key)}
+            >Delete
+            </button>
           </div>
       );
     });

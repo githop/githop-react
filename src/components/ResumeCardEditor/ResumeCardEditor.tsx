@@ -7,6 +7,7 @@ import ResumeCardContents from '../ResumeCardContents/ResumeCardContents';
 interface Props {
   cardContent: CardContent;
   updateContents: (nc: CardContent) => Promise<void>;
+  deleteCard: (rmCard: CardContent) => Promise<void>;
 }
 
 interface State {
@@ -26,6 +27,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     this.handleAccomplishementPreview = this.handleAccomplishementPreview.bind(this);
     this.onSelectChange = this.onSelectChange.bind(this);
     this.onDateFieldChange = this.onDateFieldChange.bind(this);
+    this.dispatchDeleteCard = this.dispatchDeleteCard.bind(this);
   }
 
   render() {
@@ -34,13 +36,14 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
           <div className="editor-pane">
             <h3>{this.state.isAdding ? 'Add' : 'Edit'}</h3>
             <form onSubmit={this.handleSubmit}>
+              <button>save card</button>
+              <button onClick={this.dispatchDeleteCard} className="button-primary">delete card</button>
               {this.renderCardTypeSelect()}
               {this.renderTitle()}
               {this.renderDates()}
               {this.renderPosition()}
               {this.renderDescription()}
               {this.renderAddAccomplishments()}
-              <button>save</button>
             </form>
           </div>
           <div className="accomplishment-preview-pane">
@@ -194,5 +197,10 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
     this.setState({
       editCard: newCard
     });
+  }
+
+  private dispatchDeleteCard(e: any) {
+    e.preventDefault();
+    this.props.deleteCard(this.state.editCard);
   }
 }

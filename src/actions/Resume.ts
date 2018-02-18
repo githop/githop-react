@@ -12,6 +12,9 @@ export enum ResumeActionTypes {
   UpdateCardRequest = '[Resume] Update card request',
   UpdateCardSuccess = '[Resume] Update card success',
   UpdateCardFailure = '[Resume] Update card failure',
+  DeleteCardRequest = '[Resume] Delete card request',
+  DeleteCardSuccess = '[Resume] Delete card success',
+  DeleteCardFailure = '[Resume] Delete card failure',
   UpdateAccomplishmentRequest = '[Resume] Update Accomplishment request',
   UpdateAccomplishmentSuccess = '[Resume] Update Accomplishment success',
   UpdateAccomplishmentFailure = '[Resume] Update Accomplishment failure',
@@ -107,6 +110,37 @@ export class UpdateCardSuccess implements Action {
 
 export class UpdateCardFailure implements Action {
   readonly type = ResumeActionTypes.UpdateCardFailure;
+  constructor(public payload: string) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class DeleteCardRequest implements Action {
+  readonly type = ResumeActionTypes.DeleteCardRequest;
+  get asObj() {
+    return {
+      type: this.type
+    };
+  }
+}
+
+export class DeleteCardSuccess implements Action {
+  readonly type = ResumeActionTypes.DeleteCardSuccess;
+  constructor(public payload: string) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class DeleteCardFailure implements Action {
+  readonly type = ResumeActionTypes.DeleteCardFailure;
   constructor(public payload: string) {}
   get asObj() {
     return {
@@ -229,11 +263,16 @@ export type UpdateCardActions = UpdateCardRequest
     | UpdateCardSuccess
     | UpdateCardFailure;
 
+export type DeleteCardActions = DeleteCardRequest
+    | DeleteCardSuccess
+    | DeleteCardFailure;
+
 export type ResumeActions = ResumeLoad
     | ResumeLoadFailure
     | ResumeLoadSuccess
     | AddCardActions
     | UpdateCardActions
+    | DeleteCardActions
     | UpdateAccomplishmentActions
     | AddAccomplishementActions
     | DeleteAccomplishementActions;
@@ -311,6 +350,24 @@ export const AsyncDeleteAccomplishment = (accomplishmentKey: string) => {
       dispatch(new DeleteAccomplishmentSuccess(accomplishmentKey).asObj);
     } catch (e) {
       dispatch(new DeleteAccomplishmentFailure(e).asObj);
+    }
+  };
+};
+
+export const AsyncDeleteCard = (rmCard: CardContent) => {
+  return async (dispatch: Dispatch<DeleteCardActions>) => {
+    try {
+      dispatch(new DeleteCardRequest().asObj);
+      if (rmCard.accomplishments && rmCard.accomplishments.length > 0) {
+        for (const accmp of rmCard.accomplishments) {
+          const deleteAccmpAction = AsyncDeleteAccomplishment(accmp.key);
+          await deleteAccmpAction(dispatch);
+        }
+      }
+      await GithopBackend.deleteCard(rmCard.key);
+      dispatch(new DeleteCardSuccess(rmCard.key).asObj);
+    } catch (e) {
+      dispatch(new DeleteCardFailure(e).asObj);
     }
   };
 };
