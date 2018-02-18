@@ -31,11 +31,13 @@ export default class Accomplishments extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps: any) {
-    if (nextProps.accomplishments && nextProps.accomplishments.length !== this.props.accomplishments.length) {
+    const nextAccmp = nextProps.accomplishments || [];
+    const currentAccmp = this.state.accomplishments || [];
+    if (currentAccmp.length !== nextAccmp.length) {
       this.setState({
-        accomplishments: nextProps.accomplishments
+        accomplishments: nextAccmp
       });
-      this.props.updatePreview(nextProps.accomplishments);
+      this.props.updatePreview(nextAccmp);
     }
   }
 

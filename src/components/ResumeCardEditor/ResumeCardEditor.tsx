@@ -36,8 +36,7 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
           <div className="editor-pane">
             <h3>{this.state.isAdding ? 'Add' : 'Edit'}</h3>
             <form onSubmit={this.handleSubmit}>
-              <button>save card</button>
-              <button onClick={this.dispatchDeleteCard} className="button-primary">delete card</button>
+              {this.renderControls()}
               {this.renderCardTypeSelect()}
               {this.renderTitle()}
               {this.renderDates()}
@@ -73,6 +72,16 @@ export default class ResumeCardEditor extends React.Component<Props, State> {
               type="date"
               onChange={this.onDateFieldChange}
           />
+        </section>
+    );
+  }
+
+  renderControls() {
+    const deleteButton = <button onClick={this.dispatchDeleteCard} className="button-primary">delete card</button>;
+    return (
+        <section>
+          <button>save card</button>
+          {this.state.editCard.key != null ? deleteButton : null}
         </section>
     );
   }
