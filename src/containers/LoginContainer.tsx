@@ -9,7 +9,7 @@ import { IAuthState } from '../reducers/Auth';
 
 interface Props {
   login: (credentialsObj: { email: string, password: string }) => Promise<void>;
-  logout: () => any;
+  logout: () => Promise<void>;
   authState: IAuthState;
 }
 

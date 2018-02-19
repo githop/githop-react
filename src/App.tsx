@@ -15,7 +15,7 @@ import { store } from './store';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Home from './components/home/Home';
 import Loading from './components/Loading/Loading';
-
+import TooltipContainer from './containers/TooltipContainer';
 const Resume = Loadable({
   loader: () => import('./containers/ResumeContainer'),
   loading: () => <Loading/>
@@ -42,6 +42,7 @@ class App extends React.Component {
         <Provider store={store}>
           <Router>
             <div className="gth-root">
+              <TooltipContainer/>
               <div className="gth-content">
                 <div className="gth-nav-buffer">
                   <nav className="gth-nav">

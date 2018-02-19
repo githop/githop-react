@@ -1,0 +1,46 @@
+import { Action, Dispatch } from 'redux';
+import { ToolTipModel } from '../models/Tooltip';
+
+export enum TooltipActionTypes {
+  Show = '[Tooltip] Tooltip shown',
+  Dismiss = '[Tooltip] Tooltip dismissed'
+}
+
+export class ToolTipShow implements Action {
+  readonly type = TooltipActionTypes.Show;
+  constructor(public payload: ToolTipModel) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export class ToolTipDismiss implements Action {
+  readonly type = TooltipActionTypes.Dismiss;
+  constructor(public payload: ToolTipModel) {}
+  get asObj() {
+    return {
+      type: this.type,
+      payload: this.payload
+    };
+  }
+}
+
+export type TooltipActions = ToolTipShow | ToolTipDismiss;
+
+const promiseTimeout = (len: number = 0) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), len);
+  });
+};
+
+export const AsyncPopover = (tip: ToolTipModel, duration: number = 2000) => {
+  return async (dispatch: Dispatch<TooltipActions>) => {
+    dispatch(new ToolTipShow(tip).asObj);
+    await promiseTimeout(duration);
+    tip.dismissed = true;
+    dispatch(new ToolTipDismiss(tip).asObj);
+  };
+};
