@@ -1,5 +1,5 @@
 import { Action, Dispatch } from 'redux';
-import { ToolTipModel } from '../models/Tooltip';
+import { ToolTipModel } from '../models';
 
 export enum TooltipActionTypes {
   Show = '[Tooltip] Tooltip shown',
@@ -29,6 +29,15 @@ export class ToolTipDismiss implements Action {
 }
 
 export type TooltipActions = ToolTipShow | ToolTipDismiss;
+
+export const dismissAction = (tip: ToolTipModel): Action => {
+  tip.dismissed = true;
+  return new ToolTipDismiss(tip).asObj;
+};
+
+export const showAction = (tip: ToolTipModel): Action => {
+  return new ToolTipShow(tip).asObj;
+};
 
 const promiseTimeout = (len: number = 0) => {
   return new Promise((resolve) => {

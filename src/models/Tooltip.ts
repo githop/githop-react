@@ -1,16 +1,32 @@
 import { createInstance } from './index';
 
 export class ToolTipModel {
-  text: string;
-  dismissed: boolean = false;
   id: string;
+  text?: string;
+  dismissed: boolean;
+  manual: boolean;
+  buttonText?: string;
+  action?: (a?: any) => any;
 }
 
-export const createTooltip = (text: string) => {
+export const createTooltip = (text: string | null, config?: {}) => {
   const id = generateId(20);
+  const defaultProps = {
+    id,
+    text: text || 'Hello world!',
+    dismissed: false,
+    manual: false,
+    buttonText: 'dismiss',
+    action: null
+  };
+
+  if (config != null) {
+    Object.assign(defaultProps, config);
+  }
+
   return createInstance(
       ToolTipModel,
-      Object.assign({}, {id}, {text})
+      Object.assign({}, defaultProps, config)
   );
 };
 

@@ -1,19 +1,16 @@
 import * as React from 'react';
+import { ToolTipModel } from '../models';
 
 interface Props {
-  text?: string;
+  tooltipData?: ToolTipModel;
   render: (a?: any) => any;
 }
 
 export default class Tooltip extends React.Component<Props, {}> {
-  static defaultProps = {
-    text: 'hello world!'
-  };
-
   render() {
     return (
         <React.Fragment>
-          {this.props.render({text: this.props.text})}
+          {this.props.render({tooltipData: this.props.tooltipData})}
         </React.Fragment>
     );
   }
