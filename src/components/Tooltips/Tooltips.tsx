@@ -1,7 +1,8 @@
+import './tooltips.css';
 import * as React from 'react';
 import { ITooltipState } from '../../reducers/Tooltip';
 import { createTooltip, ToolTipModel } from '../../models';
-import Tooltip from '../Tooltip';
+import Tooltip from '../Tooltip/Tooltip';
 import { ToolTipDismiss, ToolTipShow } from '../../actions';
 
 interface Props {
@@ -11,21 +12,25 @@ interface Props {
 }
 
 const Tooltips: React.StatelessComponent<Props> = (props: Props) => {
-  const { tooltips, dismiss, manual } = props;
+  const {tooltips, dismiss, manual} = props;
 
   const renderDismiss = (tip: ToolTipModel) => {
-    const customDispatch = tip.action != null ? tip.action : dismiss;
-
     if (tip.manual === false) {
       return null;
     }
+
+    const customDispatch = tip.action != null ? tip.action : dismiss;
     return (
-        <button onClick={() => customDispatch(tip)}>{tip.buttonText}</button>
+        <button
+            className="button button-primary"
+            onClick={() => customDispatch(tip)}
+        >{tip.buttonText}
+        </button>
     );
   };
 
   const renderManual = () => {
-    const tip = createTooltip(null, {manual: true, action: dismiss});
+    const tip = createTooltip('a really long tooltip with an explanation', {manual: true});
     manual(tip);
   };
 
@@ -55,11 +60,11 @@ const Tooltips: React.StatelessComponent<Props> = (props: Props) => {
               key={tooltip.id}
               tooltipData={tooltip}
               render={
-                ({tooltipData}: {tooltipData: ToolTipModel}) => (
-                    <React.Fragment>
-                      <p>{tooltipData.text}</p>
-                      {renderDismiss(tooltipData)}
-                    </React.Fragment>
+                ({tooltipData}: { tooltipData: ToolTipModel }) => (
+                    <div className="gth-tooltip --tooltip-enter">
+                      <div>{tooltipData.text}</div>
+                      <div>{renderDismiss(tooltipData)}</div>
+                    </div>
                 )}
           />
       );
@@ -69,8 +74,10 @@ const Tooltips: React.StatelessComponent<Props> = (props: Props) => {
   return (
       <React.Fragment>
         <button onClick={() => renderManual()}>add tooltip</button>
-        {renderTooltips()}
-        </React.Fragment>
+        <div className="gth-tooltips">
+          {renderTooltips()}
+        </div>
+      </React.Fragment>
   );
 };
 

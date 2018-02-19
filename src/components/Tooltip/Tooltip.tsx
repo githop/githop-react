@@ -1,5 +1,6 @@
+import './tooltip.css';
 import * as React from 'react';
-import { ToolTipModel } from '../models';
+import { ToolTipModel } from '../../models';
 
 interface Props {
   tooltipData?: ToolTipModel;

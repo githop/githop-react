@@ -1,6 +1,4 @@
 import * as React from 'react';
-import './css/normalize.css';
-import './css/skeleton.css';
 import './App.css';
 import {
   BrowserRouter as Router,
