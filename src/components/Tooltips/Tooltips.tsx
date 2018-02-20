@@ -28,8 +28,8 @@ const Tooltips: React.StatelessComponent<Props> = (props: Props) => {
     );
   };
 
-  // const renderManual = () => {
-  //   const tip = createTooltip('a really long tooltip with an explanation', {manual: true});
+  // const renderManual = (withButton: boolean) => {
+  //   const tip = createTooltip('a really long tooltip with an explanation', {manual: withButton});
   //   manual(tip);
   // };
 
@@ -47,7 +47,7 @@ const Tooltips: React.StatelessComponent<Props> = (props: Props) => {
               render={
                 ({tooltipData}: { tooltipData: ToolTipModel }) => (
                     <div className="gth-tooltip --tooltip-enter">
-                      <div>{tooltipData.text}</div>
+                      <div><strong>{tooltipData.text}</strong></div>
                       <div>{renderDismiss(tooltipData)}</div>
                     </div>
                 )}
@@ -58,7 +58,8 @@ const Tooltips: React.StatelessComponent<Props> = (props: Props) => {
 
   return (
       <React.Fragment>
-        {/*<button onClick={() => renderManual()}>add tooltip</button>*/}
+        {/*<button onClick={() => renderManual(true)}>tooltip w/ button</button>*/}
+        {/*<button onClick={() => renderManual(false)}>add tooltip</button>*/}
         <div className="gth-tooltips">
           {renderTooltips()}
         </div>

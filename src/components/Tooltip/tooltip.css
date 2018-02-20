@@ -1,6 +1,5 @@
 .gth-tooltip {
   position: relative;
-  z-index: 1;
   border-radius: 2px;
   background-color: black;
   display: flex;
@@ -10,6 +9,17 @@
   padding: 0.3rem;
   color: white;
   animation-duration: 0.3s;
+  margin: 0.3rem;
+  text-align: center;
+}
+
+.gth-tooltip div {
+  padding: 0.3rem;
+}
+
+.gth-tooltip button {
+  padding: 0 0.3rem;
+  margin: 0 auto;
 }
 
 .--tooltip-enter {
@@ -18,14 +28,6 @@
 
 .--tooltip-exit {
   animation-name: gth-tooltip-exit;
-}
-
-.gth-tooltip div {
-  padding: 0.3rem;
-}
-
-.gth-tooltip button {
-  padding: 0.3rem;
 }
 
 @keyframes gth-tooltip-enter {
