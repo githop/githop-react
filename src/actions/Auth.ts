@@ -64,6 +64,9 @@ export const AsyncLogin = ({email, password}: { email: string, password: string 
       const popOver = AsyncPopover(toolTip);
       await popOver(dispatch);
     } catch (e) {
+      const toolTip = createTooltip(e.message);
+      const popOver = AsyncPopover(toolTip);
+      await popOver(dispatch);
       dispatch(new LoginFailure(e.message).asObj);
     }
   };
