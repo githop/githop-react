@@ -1,0 +1,7 @@
+.gth-tooltips {
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  display: flex;
+  flex-direction: column-reverse;
+}

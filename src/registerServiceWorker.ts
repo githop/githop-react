@@ -19,7 +19,13 @@ const isLocalhost = Boolean(
     )
 );
 
-export default function register() {
+export const SW_NEEDS_UPDATE = 'sw-update';
+export type SW_NEEDS_UPDATE = typeof SW_NEEDS_UPDATE;
+
+export const SW_CACHED = 'sw-cached';
+export type SW_CACHED = typeof SW_CACHED;
+
+export default function register(onDispatch: any) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
     // The URL constructor is available in all browsers that support SW.
     const publicUrl = new URL(
@@ -38,16 +44,16 @@ export default function register() {
 
       if (!isLocalhost) {
         // Is not local host. Just register service worker
-        registerValidSW(swUrl);
+        registerValidSW(swUrl, onDispatch);
       } else {
         // This is running on localhost. Lets check if a service worker still exists or not.
-        checkValidServiceWorker(swUrl);
+        checkValidServiceWorker(swUrl, onDispatch);
       }
     });
   }
 }
 
-function registerValidSW(swUrl: string) {
+function registerValidSW(swUrl: string, onDispatch: any) {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -62,15 +68,17 @@ function registerValidSW(swUrl: string) {
                 // It's the perfect time to display a 'New content is
                 // available; please refresh.' message in your web app.
                 console.log('New content is available; please refresh.');
-                const confirmation = `Look's like Tom's been busy, please refresh to get updates!`;
-                if (window.confirm(confirmation)) {
-                  window.location.reload();
-                }
+                // const confirmation = `Look's like Tom's been busy, please refresh to get updates!`;
+                // if (window.confirm(confirmation)) {
+                //   window.location.reload();
+                // }
+                onDispatch(SW_NEEDS_UPDATE);
               } else {
                 // At this point, everything has been precached.
                 // It's the perfect time to display a
                 // 'Content is cached for offline use.' message.
                 console.log('Content is cached for offline use.');
+                onDispatch(SW_CACHED);
               }
             }
           };
@@ -82,7 +90,7 @@ function registerValidSW(swUrl: string) {
     });
 }
 
-function checkValidServiceWorker(swUrl: string) {
+function checkValidServiceWorker(swUrl: string, onDispatch: any) {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
     .then(response => {
@@ -99,7 +107,7 @@ function checkValidServiceWorker(swUrl: string) {
         });
       } else {
         // Service worker found. Proceed as normal.
-        registerValidSW(swUrl);
+        registerValidSW(swUrl, onDispatch);
       }
     })
     .catch(() => {
