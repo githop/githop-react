@@ -1,18 +1,17 @@
 import './tooltips.css';
 import * as React from 'react';
-import { ITooltipState } from '../../reducers/Tooltip';
-import { createTooltip, ToolTipModel } from '../../models';
+import { ToolTipModel } from '../../models';
 import Tooltip from '../Tooltip/Tooltip';
 import { ToolTipDismiss, ToolTipShow } from '../../actions';
 
 interface Props {
-  tooltips: ITooltipState;
+  tooltips: ToolTipModel[];
   dismiss: (tip: ToolTipModel) => ToolTipDismiss;
   manual: (tip: ToolTipModel) => ToolTipShow;
 }
 
 const Tooltips: React.StatelessComponent<Props> = (props: Props) => {
-  const {tooltips, dismiss, manual} = props;
+  const { tooltips, dismiss } = props;
 
   const renderDismiss = (tip: ToolTipModel) => {
     if (tip.manual === false) {
@@ -29,32 +28,18 @@ const Tooltips: React.StatelessComponent<Props> = (props: Props) => {
     );
   };
 
-  const renderManual = () => {
-    const tip = createTooltip('a really long tooltip with an explanation', {manual: true});
-    manual(tip);
-  };
+  // const renderManual = () => {
+  //   const tip = createTooltip('a really long tooltip with an explanation', {manual: true});
+  //   manual(tip);
+  // };
 
   const renderTooltips = () => {
-    if (tooltips == null) {
-      return null;
-    }
-    const tooltipsArr = Object.keys(tooltips)
-        .reduce(
-            (xsTooltips: ToolTipModel[], id: string) => {
-              const tip = tooltips[id];
-              if (tip != null && !tip.dismissed) {
-                xsTooltips.push(tip);
-              }
-              return xsTooltips;
-            },
-            []
-        );
 
-    if (tooltipsArr.length === 0) {
+    if (tooltips.length === 0) {
       return null;
     }
 
-    return tooltipsArr.map((tooltip) => {
+    return tooltips.map((tooltip) => {
       return (
           <Tooltip
               key={tooltip.id}
@@ -73,7 +58,7 @@ const Tooltips: React.StatelessComponent<Props> = (props: Props) => {
 
   return (
       <React.Fragment>
-        <button onClick={() => renderManual()}>add tooltip</button>
+        {/*<button onClick={() => renderManual()}>add tooltip</button>*/}
         <div className="gth-tooltips">
           {renderTooltips()}
         </div>

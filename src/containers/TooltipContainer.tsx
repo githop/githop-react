@@ -4,9 +4,10 @@ import Tooltips from '../components/Tooltips/Tooltips';
 import { Dispatch } from 'redux';
 import { TooltipActions, dismissAction, showAction } from '../actions';
 import { ToolTipModel } from '../models';
+import { getTooltips } from '../selectors';
 
 const mapStateToProps = (state: IState) => ({
-  tooltips: state.tooltip
+  tooltips: getTooltips(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<TooltipActions>) => ({
