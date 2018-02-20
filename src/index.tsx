@@ -10,7 +10,7 @@ import { AsyncPopover, showAction } from './actions';
 const handleServiceWorker = (swDispatch: SW_CACHED | SW_NEEDS_UPDATE) => {
   if (swDispatch === SW_CACHED) {
     const toolTip = createTooltip(null, {
-      text: 'Website cached for used offline!'
+      text: 'Website cached for use offline!'
     });
     store.dispatch(AsyncPopover(toolTip));
   }
