@@ -1,5 +1,6 @@
 .gth-tooltip {
   position: relative;
+  z-index: 1;
   border-radius: 2px;
   background-color: black;
   display: flex;
