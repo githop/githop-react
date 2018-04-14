@@ -1,9 +1,9 @@
 import { Action, Dispatch } from 'redux';
-import { ToolTipModel } from '../models';
+import { ToolTipModel, createTooltip } from '../models';
 
 export enum TooltipActionTypes {
   Show = '[Tooltip] Tooltip shown',
-  Dismiss = '[Tooltip] Tooltip dismissed'
+  Dismiss = '[Tooltip] Tooltip dismissed',
 }
 
 export class ToolTipShow implements Action {
@@ -12,7 +12,7 @@ export class ToolTipShow implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -23,7 +23,7 @@ export class ToolTipDismiss implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -40,7 +40,7 @@ export const showAction = (tip: ToolTipModel): Action => {
 };
 
 const promiseTimeout = (len: number = 0) => {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     setTimeout(() => resolve(), len);
   });
 };
@@ -52,4 +52,13 @@ export const AsyncPopover = (tip: ToolTipModel, duration: number = 2000) => {
     tip.dismissed = true;
     dispatch(new ToolTipDismiss(tip).asObj);
   };
+};
+
+export const dispatchPopover = <T extends TooltipActions>(
+  message: string,
+  dispatch: Dispatch<T>
+) => {
+  const toolip = createTooltip(message);
+  const popover = AsyncPopover(toolip);
+  return popover(dispatch);
 };

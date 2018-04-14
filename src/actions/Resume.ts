@@ -1,6 +1,7 @@
 import GithopBackend from '../lib/api-client';
 import { Action, Dispatch } from 'redux';
 import { CardAccomplishment, CardContent, IResumeState } from '../models';
+import { dispatchPopover } from './Tooltip';
 
 export enum ResumeActionTypes {
   Load = '[Resume] Load',
@@ -37,22 +38,22 @@ export class ResumeLoad implements Action {
 
 export class ResumeLoadSuccess implements Action {
   readonly type = ResumeActionTypes.LoadSuccess;
-  constructor(public payload: IResumeState ) {}
+  constructor(public payload: IResumeState) {}
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
 
 export class ResumeLoadFailure implements Action {
   readonly type = ResumeActionTypes.LoadFailure;
-  constructor(public payload: string ) {}
+  constructor(public payload: string) {}
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -61,7 +62,7 @@ export class AddCardRequest implements Action {
   readonly type = ResumeActionTypes.AddCardRequest;
   get asObj() {
     return {
-      type: this.type
+      type: this.type,
     };
   }
 }
@@ -72,7 +73,7 @@ export class AddCardSuccess implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -83,7 +84,7 @@ export class AddCardFailure implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -92,7 +93,7 @@ export class UpdateCardRequest implements Action {
   readonly type = ResumeActionTypes.UpdateCardRequest;
   get asObj() {
     return {
-      type: this.type
+      type: this.type,
     };
   }
 }
@@ -103,7 +104,7 @@ export class UpdateCardSuccess implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -114,7 +115,7 @@ export class UpdateCardFailure implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -123,7 +124,7 @@ export class DeleteCardRequest implements Action {
   readonly type = ResumeActionTypes.DeleteCardRequest;
   get asObj() {
     return {
-      type: this.type
+      type: this.type,
     };
   }
 }
@@ -134,7 +135,7 @@ export class DeleteCardSuccess implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -145,7 +146,7 @@ export class DeleteCardFailure implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -154,7 +155,7 @@ export class UpdateAccomplishmentRequest implements Action {
   readonly type = ResumeActionTypes.UpdateAccomplishmentRequest;
   get asObj() {
     return {
-      type: this.type
+      type: this.type,
     };
   }
 }
@@ -165,7 +166,7 @@ export class UpdateAccomplishmentSuccess implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -176,7 +177,7 @@ export class UpdateAccomplishmentFailure implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -185,7 +186,7 @@ export class AddAccomplishmentRequest implements Action {
   readonly type = ResumeActionTypes.AddAccomplishmentRequest;
   get asObj() {
     return {
-      type: this.type
+      type: this.type,
     };
   }
 }
@@ -196,7 +197,7 @@ export class AddAccomplishmentSuccess implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -207,7 +208,7 @@ export class AddAccomplishmentFailure implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -216,7 +217,7 @@ export class DeleteAccomplishmentRequest implements Action {
   readonly type = ResumeActionTypes.DeleteAccomplishmentRequest;
   get asObj() {
     return {
-      type: this.type
+      type: this.type,
     };
   }
 }
@@ -227,7 +228,7 @@ export class DeleteAccomplishmentSuccess implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
@@ -238,44 +239,42 @@ export class DeleteAccomplishmentFailure implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
+      payload: this.payload,
     };
   }
 }
 
-export type DeleteAccomplishementActions = DeleteAccomplishmentRequest
-    | DeleteAccomplishmentSuccess
-    | DeleteAccomplishmentFailure;
+export type DeleteAccomplishementActions =
+  | DeleteAccomplishmentRequest
+  | DeleteAccomplishmentSuccess
+  | DeleteAccomplishmentFailure;
 
-export type AddAccomplishementActions = AddAccomplishmentRequest
-    | AddAccomplishmentSuccess
-    | AddAccomplishmentFailure;
+export type AddAccomplishementActions =
+  | AddAccomplishmentRequest
+  | AddAccomplishmentSuccess
+  | AddAccomplishmentFailure;
 
-export type UpdateAccomplishmentActions = UpdateAccomplishmentRequest
-    | UpdateAccomplishmentSuccess
-    | UpdateAccomplishmentFailure;
+export type UpdateAccomplishmentActions =
+  | UpdateAccomplishmentRequest
+  | UpdateAccomplishmentSuccess
+  | UpdateAccomplishmentFailure;
 
-export type AddCardActions = AddCardRequest
-    | AddCardSuccess
-    | AddCardFailure;
+export type AddCardActions = AddCardRequest | AddCardSuccess | AddCardFailure;
 
-export type UpdateCardActions = UpdateCardRequest
-    | UpdateCardSuccess
-    | UpdateCardFailure;
+export type UpdateCardActions = UpdateCardRequest | UpdateCardSuccess | UpdateCardFailure;
 
-export type DeleteCardActions = DeleteCardRequest
-    | DeleteCardSuccess
-    | DeleteCardFailure;
+export type DeleteCardActions = DeleteCardRequest | DeleteCardSuccess | DeleteCardFailure;
 
-export type ResumeActions = ResumeLoad
-    | ResumeLoadFailure
-    | ResumeLoadSuccess
-    | AddCardActions
-    | UpdateCardActions
-    | DeleteCardActions
-    | UpdateAccomplishmentActions
-    | AddAccomplishementActions
-    | DeleteAccomplishementActions;
+export type ResumeActions =
+  | ResumeLoad
+  | ResumeLoadFailure
+  | ResumeLoadSuccess
+  | AddCardActions
+  | UpdateCardActions
+  | DeleteCardActions
+  | UpdateAccomplishmentActions
+  | AddAccomplishementActions
+  | DeleteAccomplishementActions;
 
 export const AsyncResumeLoad = () => {
   return async (dispatch: Dispatch<ResumeActions>) => {
@@ -297,8 +296,10 @@ export const AsyncUpdateCard = (nc: CardContent) => {
       const newContents = await GithopBackend.updateCardContent(nc.key, nc);
       const updateAction = new UpdateCardSuccess(newContents);
       dispatch(updateAction.asObj);
+      await dispatchPopover('Card Updated!', dispatch);
     } catch (e) {
       dispatch(new UpdateCardFailure(e).asObj);
+      await dispatchPopover(e, dispatch);
     }
   };
 };
@@ -309,9 +310,11 @@ export const AsyncAddCard = (nc: CardContent) => {
       dispatch(new AddCardRequest().asObj);
       const cardModel = await GithopBackend.addResumeCard(nc);
       const cardAction = new AddCardSuccess(cardModel);
+      await dispatchPopover('Card Added', dispatch);
       dispatch(cardAction.asObj);
     } catch (e) {
       dispatch(new AddCardFailure(e).asObj);
+      await dispatchPopover(e, dispatch);
     }
   };
 };
@@ -323,8 +326,10 @@ export const AsyncUpdateAccomplishment = (na: CardAccomplishment) => {
       const accmpModel = await GithopBackend.updateAccomplishment(na.key, na);
       const updateAction = new UpdateAccomplishmentSuccess(accmpModel);
       dispatch(updateAction.asObj);
+      await dispatchPopover('Accomplishment Updated!', dispatch);
     } catch (e) {
       dispatch(new UpdateAccomplishmentFailure(e).asObj);
+      await dispatchPopover(e, dispatch);
     }
   };
 };
@@ -335,9 +340,11 @@ export const AsyncAddAccomplishment = (na: CardAccomplishment) => {
       dispatch(new AddAccomplishmentRequest().asObj);
       const accmpModel = await GithopBackend.createAccomplishment(na);
       const updateAction = new AddAccomplishmentSuccess(accmpModel);
+      await dispatchPopover('Accomplishment Added!', dispatch);
       dispatch(updateAction.asObj);
     } catch (e) {
       dispatch(new AddAccomplishmentFailure(e).asObj);
+      await dispatchPopover(e, dispatch);
     }
   };
 };
@@ -348,8 +355,10 @@ export const AsyncDeleteAccomplishment = (accomplishmentKey: string) => {
       dispatch(new DeleteAccomplishmentRequest().asObj);
       await GithopBackend.deleteAccomplishment(accomplishmentKey);
       dispatch(new DeleteAccomplishmentSuccess(accomplishmentKey).asObj);
+      await dispatchPopover('Accomplishment Deleted!', dispatch);
     } catch (e) {
       dispatch(new DeleteAccomplishmentFailure(e).asObj);
+      await dispatchPopover(e, dispatch);
     }
   };
 };
@@ -366,8 +375,10 @@ export const AsyncDeleteCard = (rmCard: CardContent) => {
       }
       await GithopBackend.deleteCard(rmCard.key);
       dispatch(new DeleteCardSuccess(rmCard.key).asObj);
+      await dispatchPopover('Card Deleted!', dispatch);
     } catch (e) {
       dispatch(new DeleteCardFailure(e).asObj);
+      await dispatchPopover(e, dispatch);
     }
   };
 };
