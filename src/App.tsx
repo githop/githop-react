@@ -7,7 +7,7 @@ import {
   Link,
   Switch
 } from 'react-router-dom';
-import * as Loadable from 'react-loadable';
+import Loadable from 'react-loadable';
 import AuthenticatedRoute from './components/AuthenticatedRoute';
 import Home from './components/home/Home';
 import Loading from './components/Loading/Loading';
