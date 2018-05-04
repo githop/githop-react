@@ -1,3 +1,4 @@
+import { compareDesc } from 'date-fns';
 import { createSelector } from 'reselect';
 import {
   CardAccomplishment,
@@ -42,12 +43,7 @@ type GroupedCards = { [K in CardTypes]: CardContent[] };
 
 const sortCardContents = (contents: CardContent[]): CardContent[] => {
   return contents.sort((a, b) => {
-    if (a.sortDate != null && b.sortDate != null) {
-      const aDateParsed = a.sortDate.replace(/-/g, ',');
-      const bDateParsed = b.sortDate.replace(/-/g, ',');
-      return +new Date(bDateParsed) - +new Date(aDateParsed);
-    }
-    return 0;
+    return compareDesc(a.sortDate, b.sortDate);
   });
 };
 
