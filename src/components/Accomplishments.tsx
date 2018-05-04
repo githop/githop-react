@@ -16,13 +16,12 @@ interface State {
 }
 
 export default class Accomplishments extends React.Component<Props, State> {
-
   constructor(props: Props) {
     super(props);
 
     this.state = {
       accomplishments: this.props.accomplishments,
-      tempAccomplishment: null
+      tempAccomplishment: null,
     };
     this.updateTempAccomplishment = this.updateTempAccomplishment.bind(this);
     this.addTempAccomplishment = this.addTempAccomplishment.bind(this);
@@ -35,7 +34,7 @@ export default class Accomplishments extends React.Component<Props, State> {
     const currentAccmp = this.state.accomplishments || [];
     if (currentAccmp.length !== nextAccmp.length) {
       this.setState({
-        accomplishments: nextAccmp
+        accomplishments: nextAccmp,
       });
       this.props.updatePreview(nextAccmp);
     }
@@ -43,11 +42,11 @@ export default class Accomplishments extends React.Component<Props, State> {
 
   render() {
     return (
-        <div>
-          <label>Accomplishments</label>
-          {this.renderTempAccomplishment()}
-          {this.renderAccomplishments()}
-        </div>
+      <div>
+        <label>Accomplishments</label>
+        {this.renderTempAccomplishment()}
+        {this.renderAccomplishments()}
+      </div>
     );
   }
 
@@ -58,20 +57,21 @@ export default class Accomplishments extends React.Component<Props, State> {
 
     return this.state.accomplishments.map(a => {
       return (
-          <div key={a.key}>
-            <textarea
-                className="u-full-width"
-                name={a.key}
-                value={a.text}
-                onChange={(e) => this.handleInputFieldChange(e, a)}
-            />
-            <button onClick={(e) => this.dispatchUpdate(e, a)}>update</button>
-            <button
-                className="button-primary"
-                onClick={(e) => this.dispatchDeleteAccomplishment(e, a.key)}
-            >Delete
-            </button>
-          </div>
+        <div key={a.key}>
+          <textarea
+            className="u-full-width"
+            name={a.key}
+            value={a.text}
+            onChange={e => this.handleInputFieldChange(e, a)}
+          />
+          <button onClick={e => this.dispatchUpdate(e, a)}>update</button>
+          <button
+            className="button-primary"
+            onClick={e => this.dispatchDeleteAccomplishment(e, a.key)}
+          >
+            Delete
+          </button>
+        </div>
       );
     });
   }
@@ -82,18 +82,20 @@ export default class Accomplishments extends React.Component<Props, State> {
     }
 
     return (
-        <div>
-          <label>New Accomplishment</label>
-          <textarea
-              className="u-full-width"
-              name="tempAccomplishment"
-              value={this.state.tempAccomplishment.text}
-              onChange={this.updateTempAccomplishment}
-          />
+      <div>
+        <label>New Accomplishment</label>
+        <textarea
+          className="u-full-width"
+          name="tempAccomplishment"
+          value={this.state.tempAccomplishment.text}
+          onChange={this.updateTempAccomplishment}
+        />
 
-          <button onClick={this.dispatchAddAccomplishment}>Add</button>
-          <button onClick={() => this.setState({tempAccomplishment: null})}>Delete</button>
-        </div>
+        <button onClick={this.dispatchAddAccomplishment}>Add</button>
+        <button onClick={() => this.setState({ tempAccomplishment: null })}>
+          Delete
+        </button>
+      </div>
     );
   }
 
@@ -106,7 +108,7 @@ export default class Accomplishments extends React.Component<Props, State> {
     if (this.state.tempAccomplishment != null) {
       this.props.addAccomplishment(this.state.tempAccomplishment);
       this.setState({
-        tempAccomplishment: null
+        tempAccomplishment: null,
       });
     }
   }
@@ -114,17 +116,17 @@ export default class Accomplishments extends React.Component<Props, State> {
   private updateTempAccomplishment(e: any) {
     const { name, value } = e.target;
     this.setState({
-      [name]: Object.assign({}, this.state.tempAccomplishment, { text: value })
+      [name]: Object.assign({}, this.state.tempAccomplishment, { text: value }),
     });
   }
 
   private addTempAccomplishment() {
     const tempAccomplishment = createInstance(CardAccomplishment, {
       text: '',
-      parentKey: this.props.parentKey
+      parentKey: this.props.parentKey,
     });
     this.setState({
-      tempAccomplishment
+      tempAccomplishment,
     });
   }
 
@@ -134,13 +136,12 @@ export default class Accomplishments extends React.Component<Props, State> {
   }
 
   private handleInputFieldChange(e: any, originalAccmp: CardAccomplishment) {
-    const {value} = e.target;
+    const { value } = e.target;
     originalAccmp.text = value;
     this.setState({
-      accomplishments: [...this.state.accomplishments!]
+      accomplishments: [...this.state.accomplishments!],
     });
 
     this.props.updatePreview(this.state.accomplishments);
   }
-
 }

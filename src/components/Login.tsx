@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface Props {
-  login: (credentials: { email: string, password: string }) => Promise<void>;
+  login: (credentials: { email: string; password: string }) => Promise<void>;
 }
 
 interface State {
@@ -15,7 +15,7 @@ export default class Login extends React.Component<Props, State> {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -24,28 +24,35 @@ export default class Login extends React.Component<Props, State> {
 
   render() {
     return (
-        <div className="page-root">
-          <h1>Admin Login</h1>
+      <div className="page-root">
+        <h1>Admin Login</h1>
 
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="email">Email</label>
-            <input onChange={this.handleInputChange} id="email" name="email" type="email"/>
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor="email">Email</label>
+          <input onChange={this.handleInputChange} id="email" name="email" type="email" />
 
-            <label htmlFor="password">Password</label>
-            <input onChange={this.handleInputChange} id="password" name="password" type="password"/>
-            <div>
-              <button>Login</button>
-            </div>
-          </form>
-        </div>
+          <label htmlFor="password">Password</label>
+          <input
+            onChange={this.handleInputChange}
+            id="password"
+            name="password"
+            type="password"
+          />
+          <div>
+            <button>Login</button>
+          </div>
+        </form>
+      </div>
     );
   }
 
   private handleInputChange(event: any) {
-    const {target: {name, value}} = event;
+    const {
+      target: { name, value },
+    } = event;
 
     this.setState({
-      [name]: value
+      [name]: value,
     });
   }
 

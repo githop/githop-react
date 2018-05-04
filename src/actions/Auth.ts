@@ -1,14 +1,14 @@
 import { Action, Dispatch } from 'redux';
-import { User } from '../models';
 import { UserService } from '../lib';
+import { User } from '../models';
 import { createTooltip } from '../models/Tooltip';
-import { AsyncPopover } from './Tooltip';
+import { AsyncPopover, TooltipActions } from './Tooltip';
 
 export enum AuthActionTypes {
   LoginRequest = '[Login] Login request',
   LoginSuccess = '[Login] Login success',
   LoginFailure = '[Login] Login failure',
-  Logout = '[Login] Logged out'
+  Logout = '[Login] Logged out',
 }
 
 export class LoginRequest implements Action {
@@ -16,7 +16,7 @@ export class LoginRequest implements Action {
   get asObj() {
     return {
       type: this.type,
-    };
+    } as LoginRequest;
   }
 }
 
@@ -26,8 +26,8 @@ export class LoginSuccess implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
-    };
+      payload: this.payload,
+    } as LoginSuccess;
   }
 }
 
@@ -37,8 +37,8 @@ export class LoginFailure implements Action {
   get asObj() {
     return {
       type: this.type,
-      payload: this.payload
-    };
+      payload: this.payload,
+    } as LoginFailure;
   }
 }
 
@@ -47,14 +47,14 @@ export class Logout implements Action {
   get asObj() {
     return {
       type: this.type,
-    };
+    } as Logout;
   }
 }
 
 export type LoginActions = LoginRequest | LoginSuccess | LoginFailure | Logout;
 
-export const AsyncLogin = ({email, password}: { email: string, password: string }) => {
-  return async (dispatch: Dispatch<LoginActions>) => {
+export const AsyncLogin = ({ email, password }: { email: string; password: string }) => {
+  return async (dispatch: Dispatch<LoginActions | TooltipActions>) => {
     try {
       dispatch(new LoginRequest().asObj);
       const userModel = await UserService.login(email, password);
@@ -73,7 +73,7 @@ export const AsyncLogin = ({email, password}: { email: string, password: string 
 };
 
 export const LogoutEffects = () => {
-  return async (dispatch: Dispatch<LoginActions>) => {
+  return async (dispatch: Dispatch<LoginActions | TooltipActions>) => {
     try {
       dispatch(new Logout().asObj);
       const toolTip = createTooltip('Logged out!');

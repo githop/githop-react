@@ -17,17 +17,14 @@ export const createTooltip = (text: string | null, config?: {}) => {
     dismissed: false,
     manual: false,
     buttonText: 'dismiss',
-    action: null
+    action: null,
   };
 
   if (config != null) {
     Object.assign(defaultProps, config);
   }
 
-  return createInstance(
-      ToolTipModel,
-      Object.assign({}, defaultProps, config)
-  );
+  return createInstance(ToolTipModel, Object.assign({}, defaultProps, config));
 };
 
 function dec2hex(dec: number) {

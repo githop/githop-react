@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { CardContent } from '../models';
-import ResumeCardEditor from '../components/ResumeCardEditor/ResumeCardEditor';
-import { IState } from '../reducers';
-import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { makeGetAccomplishmentsForCard } from '../selectors';
+import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { AsyncDeleteCard, AsyncResumeLoad, AsyncUpdateCard } from '../actions';
+import ResumeCardEditor from '../components/ResumeCardEditor/ResumeCardEditor';
+import { CardContent } from '../models';
+import { IState } from '../reducers';
+import { makeGetAccomplishmentsForCard } from '../selectors';
 
 interface Props extends RouteComponentProps<{ id: string }> {
   cardContent: CardContent;
@@ -26,11 +26,11 @@ class ResumeCardEditorContainer extends React.Component<Props, {}> {
       return null;
     }
     return (
-        <ResumeCardEditor
-            cardContent={this.props.cardContent}
-            updateContents={(nc) => this.props.updateContents(nc)}
-            deleteCard={(rmCard) => this.props.deleteCard(rmCard)}
-        />
+      <ResumeCardEditor
+        cardContent={this.props.cardContent}
+        updateContents={nc => this.props.updateContents(nc)}
+        deleteCard={rmCard => this.props.deleteCard(rmCard)}
+      />
     );
   }
 }
@@ -38,9 +38,13 @@ class ResumeCardEditorContainer extends React.Component<Props, {}> {
 const makeMapStateToProps = () => {
   const getAccomplishmentsForCard = makeGetAccomplishmentsForCard();
   const mapStateToProps = (state: IState, props: Props) => {
-    const { match: { params: { id } } } = props;
+    const {
+      match: {
+        params: { id },
+      },
+    } = props;
     return {
-      cardContent: getAccomplishmentsForCard(state, id)
+      cardContent: getAccomplishmentsForCard(state, id),
     };
   };
   return mapStateToProps;
@@ -49,10 +53,9 @@ const makeMapStateToProps = () => {
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
   fetchResume: () => dispatch(AsyncResumeLoad()),
   updateContents: (nc: CardContent) => dispatch(AsyncUpdateCard(nc)),
-  deleteCard: (rmCard: CardContent) => dispatch(AsyncDeleteCard(rmCard))
+  deleteCard: (rmCard: CardContent) => dispatch(AsyncDeleteCard(rmCard)),
 });
 
-export default connect(
-    makeMapStateToProps,
-    mapDispatchToProps
-)(ResumeCardEditorContainer);
+export default connect(makeMapStateToProps, mapDispatchToProps as any)(
+  ResumeCardEditorContainer
+);

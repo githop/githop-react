@@ -1,6 +1,6 @@
-import './tooltip.css';
 import * as React from 'react';
 import { ToolTipModel } from '../../models';
+import './tooltip.css';
 
 interface Props {
   tooltipData?: ToolTipModel;
@@ -10,9 +10,9 @@ interface Props {
 export default class Tooltip extends React.Component<Props, {}> {
   render() {
     return (
-        <React.Fragment>
-          {this.props.render({tooltipData: this.props.tooltipData})}
-        </React.Fragment>
+      <React.Fragment>
+        {this.props.render({ tooltipData: this.props.tooltipData })}
+      </React.Fragment>
     );
   }
 }

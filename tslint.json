@@ -5,7 +5,6 @@
   "rules": {
     "no-shadowed-variable": [false],
     "no-namespace": [false],
-    "no-unused-variable": [true],
     "interface-name": [false],
     "member-access": [false],
     "no-console": [false],
@@ -18,7 +17,8 @@
     "class-name": false,
     "no-unused-expression": true,
     "jsx-boolean-value": false,
-    "only-arrow-functions": false
+    "only-arrow-functions": false,
+    "jsx-no-lambda": false
   },
   "rulesDirectory": []
 }

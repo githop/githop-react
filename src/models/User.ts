@@ -1,4 +1,3 @@
-
 export class User {
   uid: string;
   displayName: string;
@@ -7,14 +6,14 @@ export class User {
   emailVerified: string;
   phoneNumber: string;
   isAnonymous: string;
-  providerData: {
+  providerData: Array<{
     uid: string;
     displayName: string;
     photoURL: string;
     email: string;
     phoneNumber: string;
     providerId: string;
-  }[];
+  }>;
   apiKey: string;
   appName: string;
   authDomain: string;
@@ -35,28 +34,30 @@ const mockExpiry = () => {
 };
 
 export const mockUser = {
-  'uid': '',
-  'displayName': null,
-  'photoURL': null,
-  'email': 'tom@githop.com',
-  'emailVerified': false,
-  'phoneNumber': null,
-  'isAnonymous': false,
-  'providerData': [{
-    'uid': 'tom@githop.com',
-    'displayName': null,
-    'photoURL': null,
-    'email': 'tom@githop.com',
-    'phoneNumber': null,
-    'providerId': 'password'
-  }],
-  'apiKey': '',
-  'appName': '[DEFAULT]',
-  'authDomain': 'githop-backend.firebaseapp.com',
-  'stsTokenManager': {
-    'expirationTime': mockExpiry()
+  uid: '',
+  displayName: null,
+  photoURL: null,
+  email: 'tom@githop.com',
+  emailVerified: false,
+  phoneNumber: null,
+  isAnonymous: false,
+  providerData: [
+    {
+      uid: 'tom@githop.com',
+      displayName: null,
+      photoURL: null,
+      email: 'tom@githop.com',
+      phoneNumber: null,
+      providerId: 'password',
+    },
+  ],
+  apiKey: '',
+  appName: '[DEFAULT]',
+  authDomain: 'githop-backend.firebaseapp.com',
+  stsTokenManager: {
+    expirationTime: mockExpiry(),
   },
-  'redirectEventId': null,
-  'lastLoginAt': '1516525393000',
-  'createdAt': '1492928904000'
+  redirectEventId: null,
+  lastLoginAt: '1516525393000',
+  createdAt: '1492928904000',
 };

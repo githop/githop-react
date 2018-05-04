@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { AsyncResumeLoad } from '../actions';
-import { IState } from '../reducers';
 import { connect } from 'react-redux';
-import { ResumeCard } from '../models';
 import { Dispatch } from 'redux';
-import { makeGetResumeCards } from '../selectors';
+import { AsyncResumeLoad } from '../actions';
 import Resume from '../components/Resume/Resume';
+import { ResumeCard } from '../models';
+import { IState } from '../reducers';
+import { makeGetResumeCards } from '../selectors';
 interface Props {
   cards: ResumeCard[];
   fetchResume: () => Promise<void>;
@@ -14,7 +14,6 @@ interface Props {
 }
 
 class ResumeContainer extends React.Component<Props> {
-
   componentDidMount() {
     if (this.props.cards.length === 0) {
       this.props.fetchResume();
@@ -23,11 +22,11 @@ class ResumeContainer extends React.Component<Props> {
 
   render() {
     return (
-        <Resume
-            cards={this.props.cards}
-            loading={this.props.loading}
-            error={this.props.error}
-        />
+      <Resume
+        cards={this.props.cards}
+        loading={this.props.loading}
+        error={this.props.error}
+      />
     );
   }
 }
@@ -37,16 +36,13 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state: IState) => ({
     cards: getResumeCards(state),
     loading: state.resume.loading,
-    error: state.resume.error
+    error: state.resume.error,
   });
   return mapStateToProps;
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  fetchResume: () => dispatch(AsyncResumeLoad())
+  fetchResume: () => dispatch(AsyncResumeLoad()),
 });
 
-export default connect(
-    makeMapStateToProps,
-    mapDispatchToProps
-)(ResumeContainer);
+export default connect(makeMapStateToProps, mapDispatchToProps as any)(ResumeContainer);

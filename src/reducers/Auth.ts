@@ -13,29 +13,32 @@ const setInitialState = (): IAuthState => {
   return {
     user,
     isAuthenticated: !!user,
-    error: ''
+    error: '',
   } as IAuthState;
 };
 
-export const userReducer = (state = setInitialState(), action: LoginActions): IAuthState => {
+export const userReducer = (
+  state = setInitialState(),
+  action: LoginActions
+): IAuthState => {
   switch (action.type) {
     case AuthActionTypes.LoginSuccess:
       return {
         user: action.payload,
         isAuthenticated: true,
-        error: ''
+        error: '',
       };
     case AuthActionTypes.LoginFailure:
       return {
         user: null,
         isAuthenticated: false,
-        error: action.payload
+        error: action.payload,
       };
     case AuthActionTypes.Logout:
       return {
         user: null,
         isAuthenticated: false,
-        error: ''
+        error: '',
       };
     default:
       return state;

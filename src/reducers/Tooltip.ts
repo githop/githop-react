@@ -1,5 +1,5 @@
-import { ToolTipModel } from '../models/Tooltip';
 import { TooltipActions, TooltipActionTypes } from '../actions/Tooltip';
+import { ToolTipModel } from '../models/Tooltip';
 
 export interface ITooltipStore {
   [key: string]: ToolTipModel;
@@ -11,13 +11,16 @@ export interface ITooltipState {
 
 const initialState = {} as ITooltipState;
 
-export const tooltipReducer = (state = initialState, action: TooltipActions): ITooltipState => {
+export const tooltipReducer = (
+  state = initialState,
+  action: TooltipActions
+): ITooltipState => {
   switch (action.type) {
     case TooltipActionTypes.Show:
     case TooltipActionTypes.Dismiss:
       return {
-          ...state,
-          [action.payload.id]: action.payload
+        ...state,
+        [action.payload.id]: action.payload,
       };
     default:
       return state;

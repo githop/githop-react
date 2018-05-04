@@ -1,5 +1,5 @@
-import './loading.css';
 import * as React from 'react';
+import './loading.css';
 
 interface Props {
   size?: number;
@@ -10,26 +10,26 @@ const Loading: React.StatelessComponent<Props> = (props: Props) => {
   const { size, message } = props;
 
   const setDimensions = () => {
-    const _size = size != null ? size + 'rem' : '20rem';
+    const sizeStr = size != null ? size + 'rem' : '20rem';
     return {
-      width: _size,
-      height: _size
+      width: sizeStr,
+      height: sizeStr,
     };
   };
 
   const loaderSize = setDimensions();
 
   const renderMessage = () => {
-    const _message = message != null ? message : 'Loading...';
-    return <div className="gth-text">{_message}</div>;
+    const messageStr = message != null ? message : 'Loading...';
+    return <div className="gth-text">{messageStr}</div>;
   };
 
   return (
-      <div className="gth-loading" style={loaderSize}>
-        <div className="double-bounce1"/>
-        <div className="double-bounce2"/>
-        {renderMessage()}
-      </div>
+    <div className="gth-loading" style={loaderSize}>
+      <div className="double-bounce1" />
+      <div className="double-bounce2" />
+      {renderMessage()}
+    </div>
   );
 };
 

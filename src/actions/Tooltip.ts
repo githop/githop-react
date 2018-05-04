@@ -1,5 +1,5 @@
 import { Action, Dispatch } from 'redux';
-import { ToolTipModel, createTooltip } from '../models';
+import { createTooltip, ToolTipModel } from '../models';
 
 export enum TooltipActionTypes {
   Show = '[Tooltip] Tooltip shown',
@@ -13,7 +13,7 @@ export class ToolTipShow implements Action {
     return {
       type: this.type,
       payload: this.payload,
-    };
+    } as ToolTipShow;
   }
 }
 
@@ -24,7 +24,7 @@ export class ToolTipDismiss implements Action {
     return {
       type: this.type,
       payload: this.payload,
-    };
+    } as ToolTipDismiss;
   }
 }
 

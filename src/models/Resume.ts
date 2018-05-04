@@ -1,4 +1,10 @@
-export type CardTypes = 'experience' | 'sideProjects' | 'talks' | 'startup' | 'education' | 'other';
+export type CardTypes =
+  | 'experience'
+  | 'sideProjects'
+  | 'talks'
+  | 'startup'
+  | 'education'
+  | 'other';
 
 export class CardContent {
   key: string;
@@ -38,24 +44,22 @@ export interface IResumeState {
   error: string;
 }
 
-type TitleMap = {
-  [P in CardTypes]: string;
-};
+type TitleMap = { [P in CardTypes]: string };
 
 export const titleMap: TitleMap = {
-  'experience': 'Professional Experience',
-  'sideProjects': 'Side Projects',
-  'talks': 'Community / Talks',
-  'startup': 'Hackathons',
-  'education': 'Education',
-  'other': 'Other'
+  experience: 'Professional Experience',
+  sideProjects: 'Side Projects',
+  talks: 'Community / Talks',
+  startup: 'Hackathons',
+  education: 'Education',
+  other: 'Other',
 };
 
 export const emojiMap: TitleMap = {
-  'experience': '💼',
-  'sideProjects': '🏗️',
-  'talks': '🎤',
-  'startup': '🏅',
-  'education': '🎒',
-  'other': '🤷'
+  experience: '💼',
+  sideProjects: '🏗️',
+  talks: '🎤',
+  startup: '🏅',
+  education: '🎒',
+  other: '🤷',
 };

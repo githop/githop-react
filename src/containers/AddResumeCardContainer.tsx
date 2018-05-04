@@ -1,9 +1,9 @@
-import { IState } from '../reducers';
-import { CardContent, createInstance } from '../models';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import ResumeCardEditor from '../components/ResumeCardEditor/ResumeCardEditor';
+import { Dispatch } from 'redux';
 import { AsyncAddCard } from '../actions';
+import ResumeCardEditor from '../components/ResumeCardEditor/ResumeCardEditor';
+import { CardContent, createInstance } from '../models';
+import { IState } from '../reducers';
 
 const stubCard = createInstance(CardContent, {
   key: null,
@@ -15,14 +15,11 @@ const stubCard = createInstance(CardContent, {
 });
 
 const mapStateToProps = (state: IState) => ({
-  cardContent: stubCard
+  cardContent: stubCard,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-  updateContents: (nc: CardContent) => dispatch(AsyncAddCard(nc))
+  updateContents: (nc: CardContent) => dispatch(AsyncAddCard(nc)),
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ResumeCardEditor);
+export default connect(mapStateToProps, mapDispatchToProps as any)(ResumeCardEditor);
