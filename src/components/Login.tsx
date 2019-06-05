@@ -2,6 +2,8 @@ import * as React from 'react';
 
 interface Props {
   login: (credentials: { email: string; password: string }) => Promise<void>;
+  // email: string;
+  // password: string;
 }
 
 interface State {
@@ -46,14 +48,11 @@ export default class Login extends React.Component<Props, State> {
     );
   }
 
-  private handleInputChange(event: any) {
+  private handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const {
       target: { name, value },
     } = event;
-
-    this.setState({
-      [name]: value,
-    });
+    this.setState(state => ({ ...state, [name]: value }));
   }
 
   private handleSubmit(event: any) {

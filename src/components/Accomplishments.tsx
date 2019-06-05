@@ -115,6 +115,7 @@ export default class Accomplishments extends React.Component<Props, State> {
 
   private updateTempAccomplishment(e: any) {
     const { name, value } = e.target;
+    // @ts-ignore
     this.setState({
       [name]: Object.assign({}, this.state.tempAccomplishment, { text: value }),
     });

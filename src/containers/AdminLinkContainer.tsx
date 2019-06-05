@@ -11,7 +11,7 @@ interface Props {
   children?: any;
 }
 
-const AdminLinkContainer: React.StatelessComponent<Props> = (props: Props) => {
+const AdminLinkContainer: React.FC<Props> = (props: Props) => {
   const { authState, to } = props;
   if (authState && authState.isAuthenticated) {
     return <Link to={to}>{props.children}</Link>;
@@ -28,4 +28,4 @@ const makeMapStateToProps = (state: IState, ownProps: Props) => {
   return mapStateToProps;
 };
 
-export default connect(makeMapStateToProps)(AdminLinkContainer);
+export default connect(makeMapStateToProps)(AdminLinkContainer as any);

@@ -46,7 +46,7 @@ const promiseTimeout = (len: number = 0) => {
 };
 
 export const AsyncPopover = (tip: ToolTipModel, duration: number = 2000) => {
-  return async (dispatch: Dispatch<TooltipActions>) => {
+  return async <T>(dispatch: Dispatch<TooltipActions>) => {
     dispatch(new ToolTipShow(tip).asObj);
     await promiseTimeout(duration);
     tip.dismissed = true;
@@ -54,10 +54,7 @@ export const AsyncPopover = (tip: ToolTipModel, duration: number = 2000) => {
   };
 };
 
-export const dispatchPopover = <T extends TooltipActions>(
-  message: string,
-  dispatch: Dispatch<T>
-) => {
+export const dispatchPopover = (message: string, dispatch: Dispatch<TooltipActions>) => {
   const toolip = createTooltip(message);
   const popover = AsyncPopover(toolip);
   return popover(dispatch);

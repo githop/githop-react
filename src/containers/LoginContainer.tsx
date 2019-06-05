@@ -42,4 +42,7 @@ const mapDispatchToProps = (dispatch: Dispatch<LoginActions>) => ({
   logout: () => dispatch(LogoutEffects() as any),
 });
 
-export default connect(makeMapStateToProps, mapDispatchToProps)(LoginContainer);
+export default connect(
+  makeMapStateToProps,
+  mapDispatchToProps
+)(LoginContainer);
