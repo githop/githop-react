@@ -3,24 +3,10 @@ import {
   CardContent,
   createInstance,
   IResumeState,
-  mockUser,
   User,
 } from '../models';
-import { omit } from './index';
+import { BASE_URL, loginRequest, omit } from './index';
 import { getLocalUser } from './user-service';
-
-const LOGIN_FUNCTION_URL = 'https://us-central1-githop-backend.cloudfunctions.net/login';
-
-const getApiUrl = () => {
-  let baseUrl = 'githop-backend.firebaseio.com';
-  const proto = 'https://';
-  if (process.env.NODE_ENV === 'development') {
-    baseUrl = 'dev-' + baseUrl;
-  }
-  return proto + baseUrl;
-};
-
-const BASE_URL = getApiUrl();
 
 type methods = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 const request = <T>(
@@ -61,37 +47,8 @@ const request = <T>(
       }
       return response;
     })
-    .then(response => response.json())
-    .then(data => data);
-};
-
-const loginRequest = (payload: any): Promise<any> => {
-  if (process.env.NODE_ENV === 'development') {
-    return Promise.resolve(mockUser);
-  }
-  const headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-  };
-  const config = {
-    headers,
-    method: 'POST',
-  };
-
-  // add payload, headers
-  Object.assign(config, {
-    body: JSON.stringify(payload),
-  });
-
-  return fetch(LOGIN_FUNCTION_URL, config)
-    .then((response: any) => {
-      if (response.status !== 200) {
-        return response.json().then((e: any) => Promise.reject(e));
-      }
-      return response;
-    })
-    .then(response => response.json())
-    .then(data => data);
+    .then((response) => response.json())
+    .then((data) => data);
 };
 
 interface IResumeResponse {
@@ -103,14 +60,14 @@ const mapStateToModels = ({
   accomplishments,
   contents,
 }: IResumeResponse): Partial<IResumeState> => {
-  Object.keys(accomplishments).forEach(prop => {
+  Object.keys(accomplishments).forEach((prop) => {
     accomplishments[prop] = createInstance(
       CardAccomplishment,
       Object.assign(accomplishments[prop], { key: prop })
     );
   });
 
-  Object.keys(contents).forEach(prop => {
+  Object.keys(contents).forEach((prop) => {
     contents[prop] = createInstance(
       CardContent,
       Object.assign(contents[prop], { key: prop })
@@ -135,7 +92,7 @@ export default class GithopBackend {
       request('/resume')
         .then((resp: any) => mapStateToModels(resp))
         // .then(data => (console.log(data), data))
-        .catch(e => e)
+        .catch((e) => e)
     );
   }
 
@@ -149,7 +106,8 @@ export default class GithopBackend {
       key,
       'contents',
       omit(val, 'key', 'accomplishments')
-    ).then(resp => {
+    ).then((resp) => {
+      // @ts-ignore
       return createInstance(CardContent, { ...resp, ...{ key } });
     });
   }
